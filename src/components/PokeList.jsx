@@ -20,20 +20,31 @@ const PokeList = () => {
 
   return (
     <div className="pokemon-container">
+      {/* Pokémon List */}
       <div className="pokemon-list">
         {data.results.map((pokemon, index) => (
           <div
             key={index}
-            className="pokemon-card"
-            onClick={() => setSelectedPokemon(pokemon.name)} // Set selected Pokémon on click
+            className={`pokemon-card ${
+              selectedPokemon === pokemon.name ? "selected" : ""
+            }`}
+            onClick={() => setSelectedPokemon(pokemon.name)}
           >
             <h3>{pokemon.name}</h3>
+            <img
+              src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${
+                index + 1
+              }.png`}
+              alt={pokemon.name}
+            />
           </div>
         ))}
       </div>
 
+      {/* Pokémon Details */}
       {selectedPokemon && (
         <div className="pokemon-details">
+          <button onClick={() => setSelectedPokemon(null)}>Back to List</button>
           {isDetailsLoading ? (
             <p>Loading details...</p>
           ) : (

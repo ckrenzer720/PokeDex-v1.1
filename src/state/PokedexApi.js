@@ -7,7 +7,7 @@ export const pokedexApi = createApi({
   }),
   endpoints: (builder) => ({
     getPokemonList: builder.query({
-      query: () => "pokemon?limit=100",
+      query: () => "pokemon?limit=900",
     }),
     getPokemonDetails: builder.query({
       query: (name) => `pokemon/${name}`, // Fetch details by Pokémon name

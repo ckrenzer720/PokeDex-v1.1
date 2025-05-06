@@ -3,26 +3,49 @@ import {
   useGetPokemonListQuery,
   useGetPokemonDetailsQuery,
 } from "../state/PokedexApi";
+import PokemonSearchBar from "./PokemonSearchBar";
 
 const PokeList = () => {
-  const { data, error, isLoading } = useGetPokemonListQuery();
+  const [filters, setFilters] = useState({ search: "", type: "" });
+  const { data, error, isLoading } = useGetPokemonListQuery(filters);
   const [selectedPokemon, setSelectedPokemon] = useState(null);
 
   // Fetch details for the selected Pokémon
   const { data: pokemonDetails, isLoading: isDetailsLoading } =
-    useGetPokemonDetailsQuery(
-      selectedPokemon,
-      { skip: !selectedPokemon } // Skip query if no Pokémon is selected
-    );
+    useGetPokemonDetailsQuery(selectedPokemon, { skip: !selectedPokemon });
+
+  const handleSearch = (newFilters) => {
+    console.log("New Filters:", newFilters);
+    setFilters(newFilters);
+  };
 
   if (isLoading) return <p>Loading Pokémon...</p>;
-  if (error) return <p>Failed to load Pokémon. Please try again later.</p>;
+  if (error) {
+    console.error("Error fetching Pokémon:", error);
+    return <p>Failed to load Pokémon. Please try again later.</p>;
+  }
+
+  // Handle different response structures
+  const pokemonList = filters.search
+    ? data && !data.results
+      ? [data]
+      : []
+    : filters.type
+    ? data?.pokemon?.map((p) => p.pokemon) || []
+    : data?.results || [];
+
+  console.log("Filters:", filters);
+  console.log("API Response:", data);
+  console.log("Pokemon List:", pokemonList);
 
   return (
     <div className="pokemon-container">
+      {/* Search Bar */}
+      <PokemonSearchBar onSearch={handleSearch} />
+
       {/* Pokémon List */}
       <div className="pokemon-list">
-        {data.results.map((pokemon, index) => (
+        {pokemonList.map((pokemon, index) => (
           <div
             key={index}
             className={`pokemon-card ${
@@ -33,7 +56,7 @@ const PokeList = () => {
             <h3>{pokemon.name}</h3>
             <img
               src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${
-                index + 1
+                pokemon.id || index + 1
               }.png`}
               alt={pokemon.name}
             />

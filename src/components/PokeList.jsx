@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   useGetPokemonListQuery,
   useGetPokemonDetailsQuery,
@@ -7,82 +7,197 @@ import PokemonSearchBar from "./PokemonSearchBar";
 
 const PokeList = () => {
   const [filters, setFilters] = useState({ search: "", type: "" });
-  const { data, error, isLoading } = useGetPokemonListQuery(filters);
   const [selectedPokemon, setSelectedPokemon] = useState(null);
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(20);
+  const [view, setView] = useState("grid");
+  const [cachedData, setCachedData] = useState({}); // Cache for Pokémon data
 
-  // Fetch details for the selected Pokémon
+  const offset = (page - 1) * limit;
+
+  const { data, error, isLoading } = useGetPokemonListQuery({
+    ...filters,
+    limit,
+    offset,
+  });
+
   const { data: pokemonDetails, isLoading: isDetailsLoading } =
-    useGetPokemonDetailsQuery(selectedPokemon, { skip: !selectedPokemon });
+    useGetPokemonDetailsQuery(selectedPokemon, {
+      skip: !selectedPokemon, // Skip the query if no Pokémon is selected
+    });
+
+  const totalPages = data ? Math.ceil(data.count / limit) : 0;
+
+  // Cache the data for the current page
+  useEffect(() => {
+    if (data && !filters.type) {
+      setCachedData((prev) => ({
+        ...prev,
+        [page]: data.results,
+      }));
+    }
+  }, [data, page, filters.type]);
+
+  // Combine cached data with the current page data
+  const pokemonList = filters.type
+    ? data?.pokemon?.map((p) => p.pokemon) || [] // Handle type-filtered response
+    : cachedData[page] || [];
 
   const handleSearch = (newFilters) => {
-    console.log("New Filters:", newFilters);
     setFilters(newFilters);
+    setPage(1); // Reset to the first page when searching
   };
 
-  if (isLoading) return <p>Loading Pokémon...</p>;
+  const handleNextPage = () => setPage((prev) => prev + 1);
+  const handlePrevPage = () => setPage((prev) => Math.max(prev - 1, 1));
+
+  const handlePokemonClick = (pokemon) => {
+    setSelectedPokemon(pokemon.name); // Set the Pokémon name for fetching details
+  };
+
+  const renderPageNumbers = () => {
+    const pageNumbers = [];
+    const maxVisiblePages = 5;
+
+    if (totalPages <= maxVisiblePages) {
+      for (let i = 1; i <= totalPages; i++) {
+        pageNumbers.push(i);
+      }
+    } else {
+      if (page <= 3) {
+        pageNumbers.push(1, 2, 3, 4, "...", totalPages);
+      } else if (page >= totalPages - 2) {
+        pageNumbers.push(
+          1,
+          "...",
+          totalPages - 3,
+          totalPages - 2,
+          totalPages - 1,
+          totalPages
+        );
+      } else {
+        pageNumbers.push(1, "...", page - 1, page, page + 1, "...", totalPages);
+      }
+    }
+
+    return pageNumbers.map((pageNumber, index) =>
+      pageNumber === "..." ? (
+        <span key={`ellipsis-${index}`} className="ellipsis">
+          ...
+        </span>
+      ) : (
+        <button
+          key={`page-${pageNumber}`}
+          onClick={() => setPage(pageNumber)}
+          className={page === pageNumber ? "active" : ""}
+        >
+          {pageNumber}
+        </button>
+      )
+    );
+  };
+
+  if (isLoading && !cachedData[page]) return <p>Loading Pokémon...</p>;
   if (error) {
     console.error("Error fetching Pokémon:", error);
     return <p>Failed to load Pokémon. Please try again later.</p>;
   }
 
-  // Handle different response structures
-  const pokemonList = filters.search
-    ? data && !data.results
-      ? [data]
-      : []
-    : filters.type
-    ? data?.pokemon?.map((p) => p.pokemon) || []
-    : data?.results || [];
-
-  console.log("Filters:", filters);
-  console.log("API Response:", data);
-  console.log("Pokemon List:", pokemonList);
-
   return (
     <div className="pokemon-container">
-      {/* Search Bar */}
-      <PokemonSearchBar onSearch={handleSearch} />
-
-      {/* Pokémon List */}
-      <div className="pokemon-list">
-        {pokemonList.map((pokemon, index) => (
-          <div
-            key={index}
-            className={`pokemon-card ${
-              selectedPokemon === pokemon.name ? "selected" : ""
-            }`}
-            onClick={() => setSelectedPokemon(pokemon.name)}
+      <div className="header">
+        <h1>Pokédex</h1>
+        <PokemonSearchBar onSearch={handleSearch} />
+        <div>
+          <select
+            value={limit}
+            onChange={(e) => setLimit(Number(e.target.value))}
           >
-            <h3>{pokemon.name}</h3>
-            <img
-              src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${
-                pokemon.id || index + 1
-              }.png`}
-              alt={pokemon.name}
-            />
-          </div>
-        ))}
-      </div>
-
-      {/* Pokémon Details */}
-      {selectedPokemon && (
-        <div className="pokemon-details">
-          <button onClick={() => setSelectedPokemon(null)}>Back to List</button>
-          {isDetailsLoading ? (
-            <p>Loading details...</p>
-          ) : (
-            pokemonDetails && (
-              <div>
-                <h2>{pokemonDetails.name}</h2>
-                <img
-                  src={pokemonDetails.sprites.front_default}
-                  alt={pokemonDetails.name}
-                />
-              </div>
-            )
-          )}
+            <option value={10}>10</option>
+            <option value={20}>20</option>
+            <option value={50}>50</option>
+          </select>
         </div>
-      )}
+        <button
+          onClick={() => setView((prev) => (prev === "grid" ? "list" : "grid"))}
+        >
+          Switch to {view === "grid" ? "List" : "Grid"} View
+        </button>
+      </div>
+      <div className="main-content">
+        <div className={`pokemon-list ${view}`}>
+          {pokemonList.map((pokemon, index) => (
+            <div
+              key={index}
+              className="pokemon-card"
+              onClick={() => handlePokemonClick(pokemon)}
+            >
+              <h3>{pokemon.name}</h3>
+              <img
+                src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${
+                  pokemon.url.split("/").slice(-2, -1)[0]
+                }.png`}
+                alt={pokemon.name}
+              />
+            </div>
+          ))}
+        </div>
+        {selectedPokemon && (
+          <div className="pokemon-details">
+            <button onClick={() => setSelectedPokemon(null)}>
+              Back to List
+            </button>
+            {isDetailsLoading ? (
+              <p>Loading details...</p>
+            ) : (
+              pokemonDetails && (
+                <div>
+                  <h2>{pokemonDetails.name}</h2>
+                  <img
+                    src={pokemonDetails.sprites.front_default}
+                    alt={pokemonDetails.name}
+                  />
+                  <p>
+                    <strong>Height:</strong> {pokemonDetails.height}
+                  </p>
+                  <p>
+                    <strong>Weight:</strong> {pokemonDetails.weight}
+                  </p>
+                  <p>
+                    <strong>Base Experience:</strong>{" "}
+                    {pokemonDetails.base_experience}
+                  </p>
+                  <p>
+                    <strong>Abilities:</strong>
+                  </p>
+                  <ul>
+                    {pokemonDetails.abilities.map((ability, index) => (
+                      <li key={index}>{ability.ability.name}</li>
+                    ))}
+                  </ul>
+                  <p>
+                    <strong>Types:</strong>
+                  </p>
+                  <ul>
+                    {pokemonDetails.types.map((type, index) => (
+                      <li key={index}>{type.type.name}</li>
+                    ))}
+                  </ul>
+                </div>
+              )
+            )}
+          </div>
+        )}
+      </div>
+      <div className="pagination">
+        <button onClick={handlePrevPage} disabled={page === 1}>
+          &lt;-
+        </button>
+        {renderPageNumbers()}
+        <button onClick={handleNextPage} disabled={page === totalPages}>
+          -&gt;
+        </button>
+      </div>
     </div>
   );
 };

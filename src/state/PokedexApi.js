@@ -9,16 +9,13 @@ export const pokedexApi = createApi({
     getPokemonList: builder.query({
       query: ({ search = "", type = "", limit = 20, offset = 0 } = {}) => {
         if (search) {
-          // If searching by name or ID
           return `pokemon/${search}`;
         }
 
         if (type) {
-          // If filtering by type
           return `type/${type}`;
         }
 
-        // Default: Fetch paginated Pokémon list
         return `pokemon?limit=${limit}&offset=${offset}`;
       },
     }),

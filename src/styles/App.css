@@ -1,103 +1,185 @@
+@font-face {
+  font-family: "PokemonFont";
+  src: url("../assets/fonts/PokemonClassic.ttf") format("truetype");
+}
+
+/* Body and background */
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
-  background-color: #f5f5f5;
+  background: linear-gradient(to bottom, #ffcb05, #f5f5f5);
   color: #333;
+  font-family: "PokemonFont", sans-serif;
 }
 
 .app {
   text-align: center;
 }
 
-.app-header {
-  background-color: #ffcb05;
-  padding: 20px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.app-header h1 {
-  margin: 0;
-  font-size: 2.5rem;
-  color: #2a75bb;
-}
-
-main {
-  padding: 20px;
-}
-
-.pokemon-container {
+/* Header with search bar */
+.header {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  gap: 20px;
-  padding: 20px;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 10px 20px;
+  background-color: #ffcb05;
+  border-bottom: 4px solid #3b4cca;
 }
 
-.pokemon-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 15px;
-  flex: 2; /* Take up more space */
+.header h1 {
+  font-family: "PokemonFont", sans-serif;
+  font-size: 2.5rem;
+  color: #3b4cca;
+  margin: 0;
+  text-shadow: 2px 2px 0px #ffcb05;
 }
 
-.pokemon-card {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
+.header input[type="text"],
+.header select,
+.header button {
+  padding: 8px 12px;
+  margin-left: 10px;
+  border: 1px solid #3b4cca;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.header button {
+  background-color: #3b4cca;
+  color: #fff;
   cursor: pointer;
-  text-align: center;
-  background-color: #f9f9f9;
-  transition: transform 0.2s, background-color 0.2s;
+  transition: background-color 0.2s, transform 0.2s;
 }
 
-.pokemon-card:hover {
-  background-color: #e0e0e0;
+.header button:hover {
+  background-color: #2a75bb;
   transform: scale(1.05);
 }
 
-.pokemon-card.selected {
-  background-color: #d4edda;
-  border-color: #28a745;
-  transform: scale(1.1);
+.main-content {
+  display: flex;
+  gap: 20px; /* Space between the list and details */
+  align-items: flex-start; /* Align items to the top */
 }
 
-.pokemon-card img {
-  width: 100px;
-  height: 100px;
-  object-fit: contain;
-}
-
-.pokemon-card h3 {
-  margin: 10px 0 0;
-  font-size: 1.2rem;
-  color: #2a75bb;
-}
-
-.pokemon-details {
-  flex: 1; /* Take up less space */
+/* Pokémon list grid */
+.pokemon-list {
+  flex: 2; /* Take up 2/3 of the space */
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 20px;
   padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  background-color: #f9f9f9;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.pokemon-list.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 20px;
+}
+
+.pokemon-list.list {
+  display: block;
+}
+
+/* Pokémon details section */
+.pokemon-details {
+  flex: 1; /* Take up 1/3 of the space */
+  padding: 20px;
+  background-color: #fff;
+  border: 2px solid #3b4cca;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   text-align: center;
 }
 
-.pokemon-details img {
-  max-width: 150px;
-  margin-top: 10px;
-}
-
-.pokemon-details button {
-  margin-bottom: 10px;
-  padding: 5px 10px;
-  border: none;
-  border-radius: 5px;
-  background-color: #007bff;
-  color: white;
+/* Pokémon card styling */
+.pokemon-card {
+  border: 2px solid #3b4cca;
+  border-radius: 8px;
+  padding: 15px;
+  text-align: center;
+  background-color: #f7f7f7;
+  transition: transform 0.2s, box-shadow 0.2s;
   cursor: pointer;
-  transition: background-color 0.2s;
 }
 
-.pokemon-details button:hover {
-  background-color: #0056b3;
+.pokemon-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.pokemon-card.selected {
+  border-color: #ffcb05;
+  background-color: #fffbe6;
+}
+
+/* Pokémon details section */
+.pokemon-details {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #fff;
+  border: 2px solid #3b4cca;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.pokemon-details h2 {
+  font-family: "PokemonFont", sans-serif;
+  font-size: 2rem;
+  color: #3b4cca;
+}
+
+.pokemon-details img {
+  margin-top: 10px;
+  width: 150px;
+  height: auto;
+}
+
+/* Pagination styling */
+.pagination {
+  display: flex;
+  justify-content: center; /* Center the pagination controls horizontally */
+  align-items: center;
+  margin-top: 20px; /* Add space above the pagination */
+  gap: 5px; /* Add spacing between buttons */
+  position: relative; /* Ensure it stays in the flow of the document */
+  bottom: 0; /* Align it at the bottom of the container */
+  width: 100%; /* Ensure it spans the full width */
+}
+
+.pagination button {
+  padding: 8px 12px;
+  border: 1px solid #3b4cca;
+  border-radius: 4px;
+  background-color: #fff;
+  color: #3b4cca;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.pagination button:hover {
+  background-color: #3b4cca;
+  color: #fff;
+  transform: scale(1.05);
+}
+
+.pagination button.active {
+  background-color: #3b4cca;
+  color: #fff;
+  font-weight: bold;
+}
+
+.pagination button:disabled {
+  background-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
+}
+
+.pagination .ellipsis {
+  padding: 8px 12px;
+  color: #666;
 }

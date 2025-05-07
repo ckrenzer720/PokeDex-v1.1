@@ -46,7 +46,9 @@ const PokeList = () => {
 
   // Combine cached data with the current page data
   const pokemonList = filters.type
-    ? data?.pokemon?.map((p) => p.pokemon) || [] // Handle type-filtered response
+    ? data?.pokemon
+        ?.map((p) => p.pokemon) // Handle type-filtered response
+        .slice(offset, offset + limit) || [] // Apply limit and offset
     : cachedData[page] || [];
 
   const handleSearch = (newFilters) => {

@@ -6,7 +6,7 @@ import {
 } from "../state/PokedexApi";
 import PokemonSearchBar from "./PokemonSearchBar";
 
-const PokeList = () => {
+const PokeList = ({ isAuthenticated }) => {
   const [filters, setFilters] = useState({ search: "", type: "" });
   const [selectedPokemon, setSelectedPokemon] = useState(null);
   const [page, setPage] = useState(1);
@@ -21,7 +21,7 @@ const PokeList = () => {
     limit,
     offset,
   });
-
+  ``;
   const { data: pokemonDetails, isLoading: isDetailsLoading } =
     useGetPokemonDetailsQuery(selectedPokemon, {
       skip: !selectedPokemon, // Skip the query if no Pokémon is selected
@@ -61,6 +61,15 @@ const PokeList = () => {
 
   const handlePokemonClick = (pokemon) => {
     setSelectedPokemon(pokemon.name); // Set the Pokémon name for fetching details
+  };
+
+  const handleAddToTeam = (pokemon) => {
+    if (!isAuthenticated) {
+      alert("Please log in to add Pokémon to your team.");
+      return;
+    }
+    // Logic to add Pokémon to the team
+    console.log(`${pokemon.name} added to your team!`);
   };
 
   const renderPageNumbers = () => {
@@ -153,6 +162,9 @@ const PokeList = () => {
                 }.png`}
                 alt={pokemon.name}
               />
+              <button onClick={() => handleAddToTeam(pokemon)}>
+                Add to Team
+              </button>
             </div>
           ))}
         </div>

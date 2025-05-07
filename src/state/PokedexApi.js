@@ -23,7 +23,7 @@ export const pokedexApi = createApi({
       query: (name) => `pokemon/${name}`, // Fetch details by Pokémon name
     }),
     getPokemonSpecies: builder.query({
-      query: (name) => `pokemon-species/${name}`, // Fetch species data
+      query: (name) => `pokemon-species/${name}`, // Add this query
     }),
   }),
 });
@@ -31,16 +31,16 @@ export const pokedexApi = createApi({
 export const {
   useGetPokemonListQuery,
   useGetPokemonDetailsQuery,
-  useGetPokemonSpeciesQuery,
+  useGetPokemonSpeciesQuery, // Export the new query
 } = pokedexApi;
 
 // login to add to "team" or "favorites" list, search bar to filter by name or type, sort by name, type, or number, and a button to clear filters
-// - Add a search bar to filter Pokémon by name or type X
-// - Add a dropdown to sort Pokémon by name, type, or number X
+// - Add a search bar to filter Pokémon by name or type
+// - Add a dropdown to sort Pokémon by name, type, or number
 // - Add a button to clear filters
 // - Add a button to toggle between grid and list view X
-// - Add a button to set the number of Pokémon displayed per page X
+// - Add a button to set the number of Pokémon displayed per page
 // - Add a button to add Pokémon to a "team" or "favorites" list
 // - Add a button to login to save the "team" or "favorites" list
 // - Add a button to view the "team" or "favorites" list
-// - Add a button to view the details of a Pokémon X
+// - Add a button to view the details of a Pokémon

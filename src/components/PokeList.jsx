@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import {
   useGetPokemonListQuery,
   useGetPokemonDetailsQuery,
+  useGetPokemonSpeciesQuery,
 } from "../state/PokedexApi";
 import PokemonSearchBar from "./PokemonSearchBar";
 
@@ -23,6 +24,11 @@ const PokeList = () => {
 
   const { data: pokemonDetails, isLoading: isDetailsLoading } =
     useGetPokemonDetailsQuery(selectedPokemon, {
+      skip: !selectedPokemon, // Skip the query if no Pokémon is selected
+    });
+
+  const { data: pokemonSpecies, isLoading: isSpeciesLoading } =
+    useGetPokemonSpeciesQuery(selectedPokemon, {
       skip: !selectedPokemon, // Skip the query if no Pokémon is selected
     });
 
@@ -108,14 +114,20 @@ const PokeList = () => {
       <div className="header">
         <h1>Pokédex</h1>
         <PokemonSearchBar onSearch={handleSearch} />
-        <div>
+        <div className="results-per-page">
+          <label htmlFor="results-per-page">Pokémon per page:</label>
           <select
+            id="results-per-page"
             value={limit}
-            onChange={(e) => setLimit(Number(e.target.value))}
+            onChange={(e) => {
+              setLimit(Number(e.target.value));
+              setPage(1); // Reset to the first page when the limit changes
+            }}
           >
             <option value={10}>10</option>
             <option value={20}>20</option>
             <option value={50}>50</option>
+            <option value={100}>100</option>
           </select>
         </div>
         <button
@@ -147,10 +159,11 @@ const PokeList = () => {
             <button onClick={() => setSelectedPokemon(null)}>
               Back to List
             </button>
-            {isDetailsLoading ? (
+            {isDetailsLoading || isSpeciesLoading ? (
               <p>Loading details...</p>
             ) : (
-              pokemonDetails && (
+              pokemonDetails &&
+              pokemonSpecies && (
                 <div>
                   <h2>{pokemonDetails.name}</h2>
                   <img
@@ -166,6 +179,10 @@ const PokeList = () => {
                   <p>
                     <strong>Base Experience:</strong>{" "}
                     {pokemonDetails.base_experience}
+                  </p>
+                  <p>
+                    <strong>Generation:</strong>{" "}
+                    {pokemonSpecies.generation.name}
                   </p>
                   <p>
                     <strong>Abilities:</strong>
@@ -190,12 +207,24 @@ const PokeList = () => {
         )}
       </div>
       <div className="pagination">
+        <button
+          onClick={() => setPage((prev) => Math.max(prev - 10, 1))}
+          disabled={page <= 10}
+        >
+          &laquo; Skip 10
+        </button>
         <button onClick={handlePrevPage} disabled={page === 1}>
-          &lt;-
+          &lt; Prev
         </button>
         {renderPageNumbers()}
         <button onClick={handleNextPage} disabled={page === totalPages}>
-          -&gt;
+          Next &gt;
+        </button>
+        <button
+          onClick={() => setPage((prev) => Math.min(prev + 10, totalPages))}
+          disabled={page > totalPages - 10}
+        >
+          Skip 10 &raquo;
         </button>
       </div>
     </div>

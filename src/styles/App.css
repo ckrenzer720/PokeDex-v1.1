@@ -21,39 +21,50 @@ body {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
-  padding: 10px 20px;
-  background-color: #ffcb05;
-  border-bottom: 4px solid #3b4cca;
+  padding: 15px 30px; /* Add more padding for a spacious look */
+  background-color: #ffcb05; /* Pokémon yellow */
+  border-bottom: 4px solid #3b4cca; /* Pokémon blue */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
 }
 
 .header h1 {
-  font-family: "PokemonFont", sans-serif;
-  font-size: 2.5rem;
-  color: #3b4cca;
+  font-family: "PokemonFont", sans-serif; /* Pokémon-style font */
+  font-size: 3rem; /* Increase font size for emphasis */
+  color: #3b4cca; /* Pokémon blue */
   margin: 0;
-  text-shadow: 2px 2px 0px #ffcb05;
+  text-shadow: 3px 3px 0px #ffcb05, 5px 5px 0px rgba(0, 0, 0, 0.2); /* Add layered shadows */
 }
 
 .header input[type="text"],
 .header select,
 .header button {
-  padding: 8px 12px;
+  padding: 10px 15px; /* Increase padding for better usability */
   margin-left: 10px;
-  border: 1px solid #3b4cca;
-  border-radius: 4px;
+  border: 2px solid #3b4cca; /* Pokémon blue */
+  border-radius: 8px; /* Rounded corners */
   font-size: 1rem;
+  font-weight: bold;
+  background-color: #fff; /* White background */
+  color: #3b4cca; /* Pokémon blue */
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.header input[type="text"]:focus,
+.header select:focus,
+.header button:hover {
+  background-color: #3b4cca; /* Change to blue on hover/focus */
+  color: #ffcb05; /* Change text to yellow */
+  transform: scale(1.05); /* Slightly enlarge on hover */
 }
 
 .header button {
-  background-color: #3b4cca;
-  color: #fff;
-  cursor: pointer;
-  transition: background-color 0.2s, transform 0.2s;
+  background-color: #3b4cca; /* Pokémon blue */
+  color: #fff; /* White text */
 }
 
 .header button:hover {
-  background-color: #2a75bb;
-  transform: scale(1.05);
+  background-color: #2a75bb; /* Darker blue on hover */
 }
 
 .main-content {
@@ -64,9 +75,12 @@ body {
 
 /* Pokémon list grid */
 .pokemon-list {
-  flex: 2; /* Take up 2/3 of the space */
+  flex: 3; /* Increase space for the Pokémon list */
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(200px, 1fr)
+  ); /* Increase card size */
   gap: 20px;
   padding: 20px;
   background-color: #fff;
@@ -84,26 +98,75 @@ body {
   display: block;
 }
 
-/* Pokémon details section */
+/* Pokémon details section styled like a card */
 .pokemon-details {
-  flex: 1; /* Take up 1/3 of the space */
+  margin-top: 20px;
   padding: 20px;
-  background-color: #fff;
-  border: 2px solid #3b4cca;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: #f7f7f7; /* Match the card background */
+  border: 2px solid #3b4cca; /* Pokémon blue border */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a shadow for a card-like effect */
   text-align: center;
+  transition: transform 0.2s, box-shadow 0.2s; /* Add hover effects */
+}
+
+.pokemon-details:hover {
+  transform: scale(1.05); /* Slightly enlarge on hover */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Stronger shadow on hover */
+}
+
+.pokemon-details h2 {
+  font-family: "PokemonFont", sans-serif; /* Pokémon-style font */
+  font-size: 1.8rem; /* Slightly smaller than the card title */
+  color: #3b4cca; /* Pokémon blue */
+  margin-bottom: 10px;
+}
+
+.pokemon-details img {
+  margin-top: 10px;
+  width: 150px;
+  height: auto;
+  border: 2px solid #ffcb05; /* Yellow border around the image */
+  border-radius: 8px; /* Rounded corners for the image */
+  background-color: #fff; /* White background for the image */
+  padding: 5px; /* Add padding around the image */
+}
+
+.pokemon-details p {
+  font-size: 1rem;
+  color: #333;
+  margin: 5px 0;
+}
+
+.pokemon-details strong {
+  color: #3b4cca; /* Pokémon blue */
+}
+
+.pokemon-details ul {
+  list-style: none; /* Remove bullet points */
+  padding: 0;
+  margin: 10px 0;
+}
+
+.pokemon-details ul li {
+  font-size: 1rem;
+  color: #333;
+  margin: 5px 0;
 }
 
 /* Pokémon card styling */
 .pokemon-card {
   border: 2px solid #3b4cca;
   border-radius: 8px;
-  padding: 15px;
+  padding: 20px; /* Increase padding for a larger card */
   text-align: center;
+  font-size: small;
   background-color: #f7f7f7;
   transition: transform 0.2s, box-shadow 0.2s;
   cursor: pointer;
+  overflow: hidden; /* Prevent content from overflowing */
+  white-space: nowrap; /* Prevent text wrapping */
+  text-overflow: ellipsis; /* Add ellipsis for overflowed text */
 }
 
 .pokemon-card:hover {
@@ -116,70 +179,97 @@ body {
   background-color: #fffbe6;
 }
 
-/* Pokémon details section */
-.pokemon-details {
-  margin-top: 20px;
-  padding: 20px;
-  background-color: #fff;
-  border: 2px solid #3b4cca;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  text-align: center;
-}
-
-.pokemon-details h2 {
-  font-family: "PokemonFont", sans-serif;
-  font-size: 2rem;
-  color: #3b4cca;
-}
-
-.pokemon-details img {
-  margin-top: 10px;
-  width: 150px;
-  height: auto;
+.pokemon-card h3 {
+  font-size: 1.2rem; /* Reduce font size for better fit */
+  margin: 10px 0; /* Add spacing around the name */
+  color: #3b4cca; /* Pokémon blue */
+  font-weight: bold; /* Keep the text bold for readability */
+  overflow: hidden; /* Ensure the text stays within the box */
+  text-overflow: ellipsis; /* Add ellipsis for overflowed text */
+  white-space: nowrap; /* Prevent text wrapping */
 }
 
 /* Pagination styling */
 .pagination {
   display: flex;
-  justify-content: center; /* Center the pagination controls horizontally */
+  justify-content: center; /* Center the pagination controls */
   align-items: center;
   margin-top: 20px; /* Add space above the pagination */
   gap: 5px; /* Add spacing between buttons */
-  position: relative; /* Ensure it stays in the flow of the document */
-  bottom: 0; /* Align it at the bottom of the container */
-  width: 100%; /* Ensure it spans the full width */
 }
 
 .pagination button {
-  padding: 8px 12px;
-  border: 1px solid #3b4cca;
-  border-radius: 4px;
-  background-color: #fff;
-  color: #3b4cca;
+  padding: 8px 12px; /* Adjust padding for rectangular buttons */
+  border: 2px solid #3b4cca; /* Pokémon blue */
+  border-radius: 4px; /* Slightly rounded corners */
+  background-color: #ffcb05; /* Pokémon yellow */
+  color: #3b4cca; /* Pokémon blue */
+  font-family: "PokemonFont", sans-serif; /* Use Pokémon-style font */
+  font-size: 1rem;
+  font-weight: bold;
   cursor: pointer;
-  transition: background-color 0.2s, transform 0.2s;
+  transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Add a shadow for a 3D effect */
 }
 
 .pagination button:hover {
-  background-color: #3b4cca;
-  color: #fff;
-  transform: scale(1.05);
-}
-
-.pagination button.active {
-  background-color: #3b4cca;
-  color: #fff;
-  font-weight: bold;
+  transform: scale(1.05); /* Slightly enlarge on hover */
+  background-color: #3b4cca; /* Change to blue on hover */
+  color: #ffcb05; /* Change text to yellow on hover */
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3); /* Add a stronger shadow */
 }
 
 .pagination button:disabled {
-  background-color: #ccc;
-  color: #666;
+  background-color: #ccc; /* Disabled button background */
+  color: #666; /* Disabled button text color */
+  border-color: #999; /* Disabled button border */
   cursor: not-allowed;
+  box-shadow: none; /* Remove shadow for disabled buttons */
+}
+
+.pagination button.active {
+  background-color: #3b4cca; /* Active button background */
+  color: #fff; /* Active button text color */
+  border-color: #ffcb05; /* Yellow border for active button */
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.4); /* Stronger shadow for active button */
 }
 
 .pagination .ellipsis {
   padding: 8px 12px;
   color: #666;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+/* Results per page styling */
+.results-per-page {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Add spacing between the label and dropdown */
+}
+
+.results-per-page label {
+  font-family: "PokemonFont", sans-serif; /* Pokémon-style font */
+  font-size: 1rem;
+  color: #3b4cca; /* Pokémon blue */
+}
+
+.results-per-page select {
+  padding: 8px 12px;
+  border: 2px solid #3b4cca; /* Pokémon blue */
+  border-radius: 4px; /* Slightly rounded corners */
+  background-color: #fff; /* White background */
+  color: #3b4cca; /* Pokémon blue */
+  font-family: "PokemonFont", sans-serif; /* Pokémon-style font */
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.results-per-page select:hover,
+.results-per-page select:focus {
+  background-color: #3b4cca; /* Change to blue on hover/focus */
+  color: #ffcb05; /* Change text to yellow */
+  transform: scale(1.05); /* Slightly enlarge on hover */
 }

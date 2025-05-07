@@ -12,8 +12,7 @@ function App() {
     <Router>
       <div className="app">
         <header className="app-header">
-          <h1>Welcome to the PokéDex</h1>
-          {/* Auth Buttons */}
+          <h1>PokéDex</h1>
           <div>
             {!isAuthenticated ? (
               <button onClick={() => loginWithRedirect()}>Log In</button>
@@ -24,22 +23,14 @@ function App() {
                 >
                   Log Out
                 </button>
-                {/* Profile Link */}
-                <Link to="/profile" style={{ marginLeft: "10px" }}>
-                  <button>Profile</button>
-                </Link>
               </>
             )}
           </div>
-          {/* User Info */}
-          {isAuthenticated && user && (
-            <div style={{ marginTop: "10px" }}>
-              <h3>Welcome, {user.name}!</h3>
-              <img
-                src={user.picture}
-                alt={user.name}
-                style={{ width: "50px", borderRadius: "50%" }}
-              />
+          {isAuthenticated && (
+            <div className="profile-button-container">
+              <Link to="/profile">
+                <button>Profile</button>
+              </Link>
             </div>
           )}
         </header>

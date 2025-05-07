@@ -331,3 +331,71 @@ body {
   border: 2px solid #ffcb05; /* Pokémon yellow */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
+
+/* App Header Styling */
+.app-header {
+  display: flex;
+  justify-content: space-between; /* Space out elements in the header */
+  align-items: center;
+  padding: 15px 30px;
+  background-color: #ffcb05; /* Pokémon yellow */
+  border-bottom: 4px solid #3b4cca; /* Pokémon blue */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* PokéDex Title Styling */
+.app-header h1 {
+  font-family: "PokemonFont", sans-serif; /* Pokémon-style font */
+  font-size: 3rem; /* Large font size for emphasis */
+  color: #3b4cca; /* Pokémon blue */
+  margin: 0;
+  text-shadow: 3px 3px 0px #ffcb05, 5px 5px 0px rgba(0, 0, 0, 0.2); /* Add layered shadows */
+  flex: 1; /* Push the title to the left */
+  text-align: left; /* Align the title to the left */
+}
+
+/* Profile Button Container */
+.profile-button-container {
+  margin-left: auto; /* Push the profile button to the far right */
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Add spacing between buttons */
+}
+
+/* App Header Button Styling */
+.app-header a button {
+  padding: 10px 15px;
+  font-size: 1rem;
+  font-family: "PokemonFont", sans-serif;
+  font-weight: bold;
+  color: #fff;
+  background-color: #3b4cca; /* Pokémon blue */
+  border: 2px solid #ffcb05; /* Pokémon yellow */
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.app-header a button:hover {
+  background-color: #2a75bb; /* Darker blue */
+  transform: scale(1.05);
+}
+
+/* Profile Button Styling */
+.profile-button-container a button {
+  padding: 10px 15px;
+  font-size: 1rem;
+  font-family: "PokemonFont", sans-serif;
+  font-weight: bold;
+  color: #fff;
+  background-color: #3b4cca; /* Pokémon blue */
+  border: 2px solid #ffcb05; /* Pokémon yellow */
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.profile-button-container a button:hover {
+  background-color: #2a75bb; /* Darker blue */
+  transform: scale(1.05);
+}

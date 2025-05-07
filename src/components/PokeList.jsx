@@ -123,7 +123,6 @@ const PokeList = ({ isAuthenticated }) => {
   return (
     <div className="pokemon-container">
       <div className="header">
-        <h1>Pokédex</h1>
         <PokemonSearchBar onSearch={handleSearch} />
         <div className="results-per-page">
           <label htmlFor="results-per-page">Pokémon per page:</label>

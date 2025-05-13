@@ -317,23 +317,25 @@ body {
 }
 
 .results-per-page select {
-  padding: 8px 12px;
-  border: 2px solid #3b4cca; /* Pokémon blue */
-  border-radius: 4px; /* Slightly rounded corners */
-  background-color: #fff; /* White background */
-  color: #3b4cca; /* Pokémon blue */
-  font-family: "PokemonFont", sans-serif; /* Pokémon-style font */
-  font-size: 1rem;
+  padding: 2px 6px; /* Smaller padding */
+  border: 2px solid #3b4cca;
+  border-radius: 3px; /* Slightly less rounded */
+  background-color: #fff;
+  color: #3b4cca;
+  font-family: "PokemonFont", sans-serif;
+  font-size: 1rem; /* Smaller font size */
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s, transform 0.2s;
+  height: 28px; /* Optional: set a fixed smaller height */
+  min-width: 60px; /* Optional: set a minimum width */
 }
 
 .results-per-page select:hover,
 .results-per-page select:focus {
-  background-color: #3b4cca; /* Change to blue on hover/focus */
-  color: #ffcb05; /* Change text to yellow */
-  transform: scale(1.05); /* Slightly enlarge on hover */
+  background-color: #3b4cca;
+  color: #ffcb05;
+  transform: scale(1.05);
 }
 
 /* Login/Logout Buttons */

@@ -18,13 +18,19 @@ body {
 /* Header with search bar */
 .header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  gap: 2px;
   margin-bottom: 20px;
-  padding: 15px 30px; /* Add more padding for a spacious look */
-  background-color: #ffcb05; /* Pokémon yellow */
-  border-bottom: 4px solid #3b4cca; /* Pokémon blue */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+  padding: 15px 30px;
+  background-color: #ffcb05;
+  border-bottom: 4px solid #3b4cca;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  flex-wrap: wrap;
+}
+
+.header > * {
+  margin: 0 1px;
 }
 
 .header h1 {

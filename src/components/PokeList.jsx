@@ -161,9 +161,6 @@ const PokeList = ({ isAuthenticated }) => {
                 }.png`}
                 alt={pokemon.name}
               />
-              <button onClick={() => handleAddToTeam(pokemon)}>
-                Add to Team
-              </button>
             </div>
           ))}
         </div>
@@ -213,6 +210,12 @@ const PokeList = ({ isAuthenticated }) => {
                       <li key={index}>{type.type.name}</li>
                     ))}
                   </ul>
+                  <button
+                    onClick={() => handleAddToTeam(pokemonDetails)}
+                    style={{ marginTop: "16px" }}
+                  >
+                    +
+                  </button>
                 </div>
               )
             )}

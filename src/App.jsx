@@ -6,13 +6,17 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 
 function App() {
-  const { loginWithRedirect, logout, isAuthenticated, user } = useAuth0();
+  const { loginWithRedirect, logout, isAuthenticated } = useAuth0();
 
   return (
     <Router>
       <div className="app">
         <header className="app-header">
-          <h1>PokéDex</h1>
+          <h1>
+            <Link to="/" style={{ color: "inherit", textDecoration: "none" }}>
+              PokéDex
+            </Link>
+          </h1>
           <div>
             {!isAuthenticated ? (
               <button onClick={() => loginWithRedirect()}>Log In</button>

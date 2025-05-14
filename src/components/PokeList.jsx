@@ -5,6 +5,7 @@ import {
   useGetPokemonSpeciesQuery,
 } from "../state/PokedexApi";
 import PokemonSearchBar from "./PokemonSearchBar";
+import PokeballLoader from "./PokeballLoader";
 
 const PokeList = ({ isAuthenticated }) => {
   const [filters, setFilters] = useState({ search: "", type: "" });
@@ -114,7 +115,7 @@ const PokeList = ({ isAuthenticated }) => {
     );
   };
 
-  if (isLoading && !cachedData[page]) return <p>Loading Pokémon...</p>;
+  if (isLoading && !cachedData[page]) return <PokeballLoader />;
   if (error) {
     console.error("Error fetching Pokémon:", error);
     return <p>Failed to load Pokémon. Please try again later.</p>;
@@ -170,7 +171,7 @@ const PokeList = ({ isAuthenticated }) => {
               Back to List
             </button>
             {isDetailsLoading || isSpeciesLoading ? (
-              <p>Loading details...</p>
+              <PokeballLoader />
             ) : (
               pokemonDetails &&
               pokemonSpecies && (

@@ -19,7 +19,12 @@ function App() {
           </h1>
           <div>
             {!isAuthenticated ? (
-              <button onClick={() => loginWithRedirect()}>Log In</button>
+              <button
+                className="pokemon-login-btn"
+                onClick={() => loginWithRedirect()}
+              >
+                Trainer, Log In!
+              </button>
             ) : (
               <>
                 <button

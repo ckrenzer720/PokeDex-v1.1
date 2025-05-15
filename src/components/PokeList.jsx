@@ -6,6 +6,7 @@ import {
 } from "../state/PokedexApi";
 import PokemonSearchBar from "./PokemonSearchBar";
 import PokeballLoader from "./PokeballLoader";
+import PokeballButton from "./PokeballButton";
 
 const PokeList = ({ isAuthenticated }) => {
   const [filters, setFilters] = useState({ search: "", type: "" });
@@ -211,12 +212,10 @@ const PokeList = ({ isAuthenticated }) => {
                       <li key={index}>{type.type.name}</li>
                     ))}
                   </ul>
-                  <button
+                  <PokeballButton
                     onClick={() => handleAddToTeam(pokemonDetails)}
-                    style={{ marginTop: "16px" }}
-                  >
-                    +
-                  </button>
+                    className="add-to-team-btn"
+                  />
                 </div>
               )
             )}

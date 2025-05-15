@@ -521,3 +521,91 @@ body {
   border: 2px solid #222;
   transform: scale(1.07);
 }
+
+/* Pokeball Add to Team Button */
+.pokeball-add-btn {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  outline: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.pokeball-top, .pokeball-bottom {
+  position: absolute;
+  left: 0;
+  width: 40px;
+  height: 20px;
+  border: 2px solid #222;
+  background: #ff1a1a;
+  z-index: 1;
+  transition: transform 0.35s cubic-bezier(.68,-0.55,.27,1.55);
+}
+.pokeball-top {
+  top: 0;
+  border-bottom: none;
+  border-radius: 40px 40px 0 0;
+}
+.pokeball-bottom {
+  top: 20px;
+  border-top: none;
+  border-bottom: 2px solid #222;
+  border-radius: 0 0 40px 40px;
+  background: #fff;
+}
+.pokeball-center {
+  position: absolute;
+  left: 53%;
+  top: 50%;
+  width: 10px;
+  height: 10px;
+  background: #fff;
+  border: 3px solid #222;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  transition: box-shadow 0.3s;
+}
+.pokeball-plus {
+  position: absolute;
+  left: 53%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  color: #222;
+  font-size: 1.2rem;
+  font-weight: bold;
+  z-index: 3;
+  pointer-events: none;
+  font-family: inherit;
+  opacity: 0;
+  transition: opacity 0.2s 0.1s;
+}
+.pokeball-add-btn:hover .pokeball-top {
+  transform: translateY(-18px);
+}
+.pokeball-add-btn:hover .pokeball-bottom {
+  transform: none;
+}
+.pokeball-add-btn:hover .pokeball-plus {
+  opacity: 1;
+}
+.pokeball-add-btn:active .pokeball-center {
+  box-shadow: 0 0 0 4px #ffcb05;
+}
+
+.pokeball-line {
+  position: absolute;
+  left: 1px;
+  right: -4px;
+  top: 50%;
+  height: 3px;
+  background: #222;
+  border-radius: 2px;
+  z-index: 1;
+  transform: translateY(-50%);
+}

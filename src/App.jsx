@@ -28,6 +28,7 @@ function App() {
             ) : (
               <>
                 <button
+                  className="pokemon-login-btn"
                   onClick={() => logout({ returnTo: window.location.origin })}
                 >
                   Log Out
@@ -38,7 +39,7 @@ function App() {
           {isAuthenticated && (
             <div className="profile-button-container">
               <Link to="/profile">
-                <button>Profile</button>
+                <button className="pokemon-login-btn">Profile</button>
               </Link>
             </div>
           )}

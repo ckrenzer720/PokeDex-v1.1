@@ -11,6 +11,14 @@ export const pokeCartApi = createApi({
       query: () => "pokemons",
       providesTags: ["MyCart"],
     }),
+    addPokemon: builder.mutation({
+      query: (pokemon) => ({
+        url: "pokemons",
+        method: "POST",
+        body: pokemon,
+      }),
+      invalidatesTags: ["MyCart"],
+    }),
   }),
 });
 

@@ -1,14 +1,20 @@
 import React from "react";
 import { useAuth0 } from "@auth0/auth0-react";
+import { useGetPokemonCollectionQuery } from "../state/PokeCartApi";
+import PokeballLoader from "./PokeballLoader";
 
 const Profile = () => {
-  const { user, isLoading, error } = useAuth0();
+  const { user, isLoading, error, isAuthenticated } = useAuth0();
+  const { data: team } = useGetPokemonCollectionQuery();
 
   if (isLoading) {
     return (
       <div className="profile-container">
         <div className="id-card">
-          <div className="loading-message">Loading profile...</div>
+          <div className="loading-message">
+            <PokeballLoader />
+            <p>Loading profile...</p>
+          </div>
         </div>
       </div>
     );
@@ -26,7 +32,7 @@ const Profile = () => {
     );
   }
 
-  if (!user) {
+  if (!isAuthenticated || !user) {
     return (
       <div className="profile-container">
         <div className="id-card">
@@ -71,14 +77,23 @@ const Profile = () => {
           <div className="team-section">
             <h3>Your Team</h3>
             <div className="team-placeholder">
-              {/* Add team display logic here */}
-              <p>No Pokémon in your team yet</p>
+              {team && team.length > 0 ? (
+                <div className="team-grid">
+                  {team.map((pokemon) => (
+                    <div key={pokemon.name} className="team-pokemon">
+                      <img src={pokemon.img} alt={pokemon.name} />
+                      <span>{pokemon.name}</span>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p>No Pokémon in your team yet</p>
+              )}
             </div>
           </div>
           <div className="favorites-section">
             <h3>Favorites</h3>
             <div className="favorites-placeholder">
-              {/* Add favorites display logic here */}
               <p>No favorites yet</p>
             </div>
           </div>

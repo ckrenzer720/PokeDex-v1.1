@@ -577,7 +577,9 @@ body {
 
 .id-card {
   width: 100%;
-  max-width: 600px;
+  max-width: 950px;
+  height: 100%;
+  max-height: 800px;
   background: white;
   border-radius: 15px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
@@ -682,4 +684,60 @@ body {
     width: 120px;
     height: 120px;
   }
+}
+
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 15px;
+  padding: 15px;
+}
+
+.team-pokemon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 10px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+
+.team-pokemon:hover {
+  transform: scale(1.05);
+}
+
+.team-pokemon img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+}
+
+.team-pokemon span {
+  font-size: 0.9rem;
+  color: #3b4cca;
+  text-transform: capitalize;
+}
+
+.loading-message,
+.error-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  text-align: center;
+  color: #3b4cca;
+}
+
+.loading-message p {
+  margin-top: 20px;
+  font-size: 1.2rem;
+}
+
+.error-message {
+  color: #ff1a1a;
+  font-size: 1.2rem;
 }

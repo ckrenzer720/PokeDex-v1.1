@@ -4,6 +4,7 @@ import {
   useGetPokemonDetailsQuery,
   useGetPokemonSpeciesQuery,
 } from "../state/PokedexApi";
+import { useAddPokemonMutation } from "../state/PokeCartApi";
 import PokemonSearchBar from "./PokemonSearchBar";
 import PokeballLoader from "./PokeballLoader";
 import PokeballButton from "./PokeballButton";
@@ -15,6 +16,7 @@ const PokeList = ({ isAuthenticated }) => {
   const [limit, setLimit] = useState(20);
   const [view, setView] = useState("grid");
   const [cachedData, setCachedData] = useState({}); // Cache for Pokémon data
+  const [addPokemon] = useAddPokemonMutation();
 
   const offset = (page - 1) * limit;
 
@@ -65,13 +67,23 @@ const PokeList = ({ isAuthenticated }) => {
     setSelectedPokemon(pokemon.name); // Set the Pokémon name for fetching details
   };
 
-  const handleAddToTeam = (pokemon) => {
+  const handleAddToTeam = async (pokemon) => {
     if (!isAuthenticated) {
       alert("Please log in to add Pokémon to your team.");
       return;
     }
-    // Logic to add Pokémon to the team
-    console.log(`${pokemon.name} added to your team!`);
+
+    try {
+      const pokemonInfo = {
+        name: pokemon.name,
+        img: pokemon.sprites.front_default,
+      };
+      await addPokemon(pokemonInfo).unwrap();
+      alert(`${pokemon.name} has been added to your team!`);
+    } catch (error) {
+      console.error("Failed to add Pokémon to team:", error);
+      alert("Failed to add Pokémon to team. Please try again.");
+    }
   };
 
   const renderPageNumbers = () => {

@@ -33,6 +33,24 @@ app.post("/api/pokemons", (req, res) => {
   res.status(201).json(pokemon);
 });
 
+app.delete("/api/pokemons/:name", (req, res) => {
+  const pokemonName = req.params.name;
+  const team = pokemonTeams.get("default") || [];
+
+  // Find the index of the Pokémon to remove
+  const index = team.findIndex((p) => p.name === pokemonName);
+
+  if (index === -1) {
+    return res.status(404).json({ error: "Pokémon not found in team" });
+  }
+
+  // Remove the Pokémon from the team
+  team.splice(index, 1);
+  pokemonTeams.set("default", team);
+
+  res.status(200).json({ message: `${pokemonName} removed from team` });
+});
+
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });

@@ -8,6 +8,12 @@ import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 function App() {
   const { loginWithRedirect, logout, isAuthenticated } = useAuth0();
 
+  const handleLogin = () => {
+    loginWithRedirect({
+      appState: { returnTo: window.location.pathname },
+    });
+  };
+
   return (
     <Router>
       <div className="app">
@@ -19,10 +25,7 @@ function App() {
           </h1>
           <div>
             {!isAuthenticated ? (
-              <button
-                className="pokemon-login-btn"
-                onClick={() => loginWithRedirect()}
-              >
+              <button className="pokemon-login-btn" onClick={handleLogin}>
                 Trainer, Log In!
               </button>
             ) : (

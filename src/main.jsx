@@ -4,21 +4,19 @@ import { Provider } from "react-redux";
 import { Auth0Provider } from "@auth0/auth0-react";
 import store from "./state/store";
 import App from "./App";
+import { auth0Config } from "./auth0-config";
+import "./styles/App.css";
 
-const domain = import.meta.env.VITE_AUTH0_DOMAIN;
-const clientId = import.meta.env.VITE_AUTH0_CLIENT_ID;
-
-const root = ReactDOM.createRoot(document.getElementById("root")); // Create a root
-root.render(
-  <Auth0Provider
-    domain={domain}
-    clientId={clientId}
-    authorizationParams={{
-      redirect_uri: window.location.origin,
-    }}
-  >
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </Auth0Provider>
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <React.StrictMode>
+    <Auth0Provider
+      domain={auth0Config.domain}
+      clientId={auth0Config.clientId}
+      authorizationParams={auth0Config.authorizationParams}
+    >
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </Auth0Provider>
+  </React.StrictMode>
 );

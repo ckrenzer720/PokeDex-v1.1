@@ -1,11 +1,37 @@
-import React from "react";
+import React, { useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import { useGetPokemonCollectionQuery } from "../state/PokeCartApi";
+import {
+  useGetPokemonCollectionQuery,
+  useRemovePokemonMutation,
+} from "../state/PokeCartApi";
 import PokeballLoader from "./PokeballLoader";
 
 const Profile = () => {
   const { user, isLoading, error, isAuthenticated } = useAuth0();
   const { data: team } = useGetPokemonCollectionQuery();
+  const [removePokemon] = useRemovePokemonMutation();
+  const [removingPokemon, setRemovingPokemon] = useState(null);
+  const [successMessage, setSuccessMessage] = useState("");
+
+  const handleRemovePokemon = async (pokemonName) => {
+    if (
+      window.confirm(
+        `Are you sure you want to remove ${pokemonName} from your team?`
+      )
+    ) {
+      try {
+        setRemovingPokemon(pokemonName);
+        await removePokemon(pokemonName).unwrap();
+        setSuccessMessage(`${pokemonName} has been removed from your team!`);
+        setTimeout(() => setSuccessMessage(""), 3000); // Clear message after 3 seconds
+      } catch (error) {
+        console.error("Failed to remove Pokémon:", error);
+        alert("Failed to remove Pokémon. Please try again.");
+      } finally {
+        setRemovingPokemon(null);
+      }
+    }
+  };
 
   if (isLoading) {
     return (
@@ -47,6 +73,9 @@ const Profile = () => {
   return (
     <div className="profile-container">
       <div className="id-card">
+        {successMessage && (
+          <div className="success-message">{successMessage}</div>
+        )}
         <div className="id-card-header">
           <h2>Trainer ID Card</h2>
         </div>
@@ -80,9 +109,23 @@ const Profile = () => {
               {team && team.length > 0 ? (
                 <div className="team-grid">
                   {team.map((pokemon) => (
-                    <div key={pokemon.name} className="team-pokemon">
+                    <div
+                      key={pokemon.name}
+                      className={`team-pokemon ${
+                        removingPokemon === pokemon.name ? "removing" : ""
+                      }`}
+                    >
                       <img src={pokemon.img} alt={pokemon.name} />
                       <span>{pokemon.name}</span>
+                      <button
+                        className="remove-pokemon-btn"
+                        onClick={() => handleRemovePokemon(pokemon.name)}
+                        title={`Remove ${pokemon.name} from team`}
+                        aria-label={`Remove ${pokemon.name} from team`}
+                        disabled={removingPokemon === pokemon.name}
+                      >
+                        ×
+                      </button>
                     </div>
                   ))}
                 </div>

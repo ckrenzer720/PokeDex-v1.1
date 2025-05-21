@@ -19,8 +19,18 @@ export const pokeCartApi = createApi({
       }),
       invalidatesTags: ["MyCart"],
     }),
+    removePokemon: builder.mutation({
+      query: (pokemonName) => ({
+        url: `pokemons/${pokemonName}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["MyCart"],
+    }),
   }),
 });
 
-export const { useGetPokemonCollectionQuery, useAddPokemonMutation } =
-  pokeCartApi;
+export const {
+  useGetPokemonCollectionQuery,
+  useAddPokemonMutation,
+  useRemovePokemonMutation,
+} = pokeCartApi;

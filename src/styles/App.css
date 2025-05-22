@@ -579,7 +579,7 @@ body {
   width: 100%;
   max-width: 950px;
   height: 100%;
-  max-height: 800px;
+  max-height: 1000px;
   background: white;
   border-radius: 15px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
@@ -802,5 +802,118 @@ body {
   }
   to {
     opacity: 0;
+  }
+}
+
+.favorites-section {
+  margin-top: 2rem;
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+}
+
+.favorites-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.favorite-pokemon {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.5rem;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out;
+}
+
+.favorite-pokemon:hover {
+  transform: translateY(-2px);
+}
+
+.favorite-pokemon img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+}
+
+.favorite-pokemon span {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  text-align: center;
+  text-transform: capitalize;
+}
+
+.remove-favorite-btn {
+  position: absolute;
+  top: 0.25rem;
+  right: 0.25rem;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  border: none;
+  background-color: #ff4444;
+  color: white;
+  border-radius: 50%;
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.favorite-pokemon:hover .remove-favorite-btn {
+  opacity: 1;
+}
+
+.remove-favorite-btn:hover {
+  background-color: #cc0000;
+}
+
+.pokemon-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.favorite-btn {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  background-color: #ffd700;
+  color: #fff;
+  border-radius: 50%;
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.favorite-btn:hover {
+  background-color: #ffc800;
+}
+
+.favorite-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.favorite-pokemon.removing {
+  animation: fadeOut 0.3s ease-in-out;
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.8);
   }
 }

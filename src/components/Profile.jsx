@@ -3,14 +3,21 @@ import { useAuth0 } from "@auth0/auth0-react";
 import {
   useGetPokemonCollectionQuery,
   useRemovePokemonMutation,
+  useGetFavoritesQuery,
+  useAddFavoriteMutation,
+  useRemoveFavoriteMutation,
 } from "../state/PokeCartApi";
 import PokeballLoader from "./PokeballLoader";
 
 const Profile = () => {
   const { user, isLoading, error, isAuthenticated } = useAuth0();
   const { data: team } = useGetPokemonCollectionQuery();
+  const { data: favorites } = useGetFavoritesQuery();
   const [removePokemon] = useRemovePokemonMutation();
+  const [addFavorite] = useAddFavoriteMutation();
+  const [removeFavorite] = useRemoveFavoriteMutation();
   const [removingPokemon, setRemovingPokemon] = useState(null);
+  const [removingFavorite, setRemovingFavorite] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
 
   const handleRemovePokemon = async (pokemonName) => {
@@ -23,12 +30,45 @@ const Profile = () => {
         setRemovingPokemon(pokemonName);
         await removePokemon(pokemonName).unwrap();
         setSuccessMessage(`${pokemonName} has been removed from your team!`);
-        setTimeout(() => setSuccessMessage(""), 3000); // Clear message after 3 seconds
+        setTimeout(() => setSuccessMessage(""), 3000);
       } catch (error) {
         console.error("Failed to remove Pokémon:", error);
         alert("Failed to remove Pokémon. Please try again.");
       } finally {
         setRemovingPokemon(null);
+      }
+    }
+  };
+
+  const handleAddFavorite = async (pokemon) => {
+    try {
+      await addFavorite(pokemon).unwrap();
+      setSuccessMessage(`${pokemon.name} has been added to your favorites!`);
+      setTimeout(() => setSuccessMessage(""), 3000);
+    } catch (error) {
+      console.error("Failed to add to favorites:", error);
+      alert("Failed to add to favorites. Please try again.");
+    }
+  };
+
+  const handleRemoveFavorite = async (pokemonName) => {
+    if (
+      window.confirm(
+        `Are you sure you want to remove ${pokemonName} from your favorites?`
+      )
+    ) {
+      try {
+        setRemovingFavorite(pokemonName);
+        await removeFavorite(pokemonName).unwrap();
+        setSuccessMessage(
+          `${pokemonName} has been removed from your favorites!`
+        );
+        setTimeout(() => setSuccessMessage(""), 3000);
+      } catch (error) {
+        console.error("Failed to remove from favorites:", error);
+        alert("Failed to remove from favorites. Please try again.");
+      } finally {
+        setRemovingFavorite(null);
       }
     }
   };
@@ -117,15 +157,28 @@ const Profile = () => {
                     >
                       <img src={pokemon.img} alt={pokemon.name} />
                       <span>{pokemon.name}</span>
-                      <button
-                        className="remove-pokemon-btn"
-                        onClick={() => handleRemovePokemon(pokemon.name)}
-                        title={`Remove ${pokemon.name} from team`}
-                        aria-label={`Remove ${pokemon.name} from team`}
-                        disabled={removingPokemon === pokemon.name}
-                      >
-                        ×
-                      </button>
+                      <div className="pokemon-actions">
+                        <button
+                          className="remove-pokemon-btn"
+                          onClick={() => handleRemovePokemon(pokemon.name)}
+                          title={`Remove ${pokemon.name} from team`}
+                          aria-label={`Remove ${pokemon.name} from team`}
+                          disabled={removingPokemon === pokemon.name}
+                        >
+                          ×
+                        </button>
+                        <button
+                          className="favorite-btn"
+                          onClick={() => handleAddFavorite(pokemon)}
+                          title={`Add ${pokemon.name} to favorites`}
+                          aria-label={`Add ${pokemon.name} to favorites`}
+                          disabled={favorites?.some(
+                            (f) => f.name === pokemon.name
+                          )}
+                        >
+                          ★
+                        </button>
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -137,7 +190,32 @@ const Profile = () => {
           <div className="favorites-section">
             <h3>Favorites</h3>
             <div className="favorites-placeholder">
-              <p>No favorites yet</p>
+              {favorites && favorites.length > 0 ? (
+                <div className="favorites-grid">
+                  {favorites.map((pokemon) => (
+                    <div
+                      key={pokemon.name}
+                      className={`favorite-pokemon ${
+                        removingFavorite === pokemon.name ? "removing" : ""
+                      }`}
+                    >
+                      <img src={pokemon.img} alt={pokemon.name} />
+                      <span>{pokemon.name}</span>
+                      <button
+                        className="remove-favorite-btn"
+                        onClick={() => handleRemoveFavorite(pokemon.name)}
+                        title={`Remove ${pokemon.name} from favorites`}
+                        aria-label={`Remove ${pokemon.name} from favorites`}
+                        disabled={removingFavorite === pokemon.name}
+                      >
+                        ×
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p>No favorites yet</p>
+              )}
             </div>
           </div>
         </div>

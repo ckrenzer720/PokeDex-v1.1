@@ -8,6 +8,7 @@ import { useAddPokemonMutation } from "../state/PokeCartApi";
 import PokemonSearchBar from "./PokemonSearchBar";
 import PokeballLoader from "./PokeballLoader";
 import PokeballButton from "./PokeballButton";
+import { useNavigate } from "react-router-dom";
 
 const PokeList = ({ isAuthenticated }) => {
   const [filters, setFilters] = useState({ search: "", type: "" });
@@ -17,6 +18,7 @@ const PokeList = ({ isAuthenticated }) => {
   const [view, setView] = useState("grid");
   const [cachedData, setCachedData] = useState({}); // Cache for Pokémon data
   const [addPokemon] = useAddPokemonMutation();
+  const navigate = useNavigate();
 
   const offset = (page - 1) * limit;
 
@@ -25,7 +27,7 @@ const PokeList = ({ isAuthenticated }) => {
     limit,
     offset,
   });
-  ``;
+
   const { data: pokemonDetails, isLoading: isDetailsLoading } =
     useGetPokemonDetailsQuery(selectedPokemon, {
       skip: !selectedPokemon, // Skip the query if no Pokémon is selected
@@ -64,7 +66,9 @@ const PokeList = ({ isAuthenticated }) => {
   const handlePrevPage = () => setPage((prev) => Math.max(prev - 1, 1));
 
   const handlePokemonClick = (pokemon) => {
-    setSelectedPokemon(pokemon.name); // Set the Pokémon name for fetching details
+    // Navigate to the details page for this Pokémon
+    const num = pokemon.url.split("/").slice(-2, -1)[0];
+    navigate(`/pokemon/${num}`);
   };
 
   const handleAddToTeam = async (pokemon) => {

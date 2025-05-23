@@ -4,6 +4,7 @@ import PokeList from "./components/PokeList";
 import Profile from "./components/Profile";
 import { useAuth0 } from "@auth0/auth0-react";
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
+import PokemonPage from "./components/PokemonPage";
 
 function App() {
   const { loginWithRedirect, logout, isAuthenticated } = useAuth0();
@@ -54,6 +55,7 @@ function App() {
               element={<PokeList isAuthenticated={isAuthenticated} />}
             />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/pokemon/:num" element={<PokemonPage />} />
           </Routes>
         </main>
       </div>

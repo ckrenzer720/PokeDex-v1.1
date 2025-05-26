@@ -9,6 +9,20 @@ import PokemonDetails from "./PokemonDetails";
 
 const getPokemonNumber = (num) => `#${String(num).padStart(4, "0")}`;
 
+// Convert meters to feet and inches
+const metersToFeetInches = (meters) => {
+  const totalInches = meters * 39.3701;
+  const feet = Math.floor(totalInches / 12);
+  const inches = Math.round(totalInches % 12);
+  return `${feet}'${inches}"`;
+};
+
+// Convert kilograms to pounds
+const kgToPounds = (kg) => {
+  const pounds = kg * 2.20462;
+  return `${pounds.toFixed(1)} lbs`;
+};
+
 const PokemonPage = () => {
   const { num } = useParams();
   const { data: pokemonDetails, isLoading: isDetailsLoading } =
@@ -102,8 +116,10 @@ const PokemonPage = () => {
               ?.flavor_text.replace(/\f/g, " ")}
           </p>
           <div style={{ margin: "18px 0" }}>
-            <strong>Height:</strong> {pokemonDetails.height / 10} m<br />
-            <strong>Weight:</strong> {pokemonDetails.weight / 10} kg
+            <strong>Height:</strong>{" "}
+            {metersToFeetInches(pokemonDetails.height / 10)}
+            <br />
+            <strong>Weight:</strong> {kgToPounds(pokemonDetails.weight / 10)}
             <br />
             <strong>Base Experience:</strong> {pokemonDetails.base_experience}
             <br />

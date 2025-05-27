@@ -13,6 +13,8 @@ body {
 
 .app {
   text-align: center;
+  background-color: #e4e3e3;
+  min-height: 100vh;
 }
 
 /* Header with search bar */
@@ -104,6 +106,92 @@ body {
 
 .pokemon-list.list {
   display: block;
+}
+
+.pokemon-details-page {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+  width: 100%;
+}
+
+.pokemon-details-container {
+  display: flex;
+  align-items: center; /* vertical alignment */
+  gap: 48px; /* more space between image and card */
+  background-color: #ddd7d7;
+  box-shadow: 0 0 10px rgba(15, 5, 3, 0.5); /* remove shadow from container */
+  padding: 0;
+  max-width: 1100px;
+  width: 100%;
+  border: 2px solid #646568;
+}
+
+.pokemon-left-section {
+  flex: 1;
+  display: inherit;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 20px;
+}
+
+.pokemon-image {
+  width: 350px;
+  height: 350px;
+  object-fit: contain;
+  margin-bottom: 0;
+  background: none;
+}
+
+.pokemon-right-section {
+  flex: 0 0 370px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding-right: 20px;
+  border-radius: 18px;
+}
+
+.pokemon-info-card {
+  background: #7c9469;
+  border-radius: 18px;
+  padding: 28px 28px 20px 28px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px 32px;
+  min-width: 340px;
+  max-width: 370px;
+  color: #222;
+  font-family: inherit;
+  box-shadow: 0 4px 24px rgba(60, 60, 60, 0.1);
+}
+
+.pokemon-info-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pokemon-info-label {
+  font-size: 1rem;
+  color: #ffffffcc;
+  font-weight: 500;
+  margin-bottom: 2px;
+}
+
+.pokemon-info-value {
+  font-size: 1.25rem;
+  color: #222;
+  font-weight: 600;
+}
+
+.pokemon-info-gender {
+  font-size: 1.5rem;
+  letter-spacing: 8px;
+  color: #222;
+  margin-top: 2px;
 }
 
 /* Pokémon details section styled like a card */
@@ -933,6 +1021,9 @@ body {
   margin-bottom: 20px;
   text-align: center;
   font-family: "PokemonFont", sans-serif;
+  max-width: fit-content;
+  margin: 0 auto;
+  padding-bottom: 20px;
 }
 
 .stats-bars {

@@ -6,6 +6,7 @@ import {
 } from "../state/PokedexApi";
 import PokeballLoader from "./PokeballLoader";
 import PokemonDetails from "./PokemonDetails";
+import "../styles/App.css";
 
 const getPokemonNumber = (num) => `#${String(num).padStart(4, "0")}`;
 
@@ -23,6 +24,18 @@ const kgToPounds = (kg) => {
   return `${pounds.toFixed(1)} lbs`;
 };
 
+const getGenus = (species) => {
+  const genusObj = species.genera?.find((g) => g.language.name === "en");
+  return genusObj ? genusObj.genus : "-";
+};
+
+const getGenderIcons = (species) => {
+  // If gender_rate is -1, Pokémon is genderless
+  if (species.gender_rate === -1) return "-";
+  // Otherwise, show both icons (♂ ♀) for simplicity
+  return "♂ ♀";
+};
+
 const PokemonPage = () => {
   const { num } = useParams();
   const { data: pokemonDetails, isLoading: isDetailsLoading } =
@@ -34,53 +47,19 @@ const PokemonPage = () => {
   if (!pokemonDetails || !pokemonSpecies) return <p>Pokémon not found.</p>;
 
   return (
-    <div style={{ display: "flex", justifyContent: "center", marginTop: 40 }}>
-      <div
-        style={{
-          background: "#fff",
-          borderRadius: 20,
-          boxShadow: "0 4px 24px rgba(60,60,60,0.12)",
-          padding: 32,
-          maxWidth: 800,
-          width: "100%",
-          display: "flex",
-          gap: 32,
-        }}
-      >
-        <div
-          style={{
-            flex: 1,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
+    <div className="pokemon-details-page">
+      <div className="pokemon-details-container">
+        <div className="pokemon-left-section">
           <img
             src={pokemonDetails.sprites.front_default}
             alt={pokemonDetails.name}
-            style={{
-              width: 220,
-              height: 220,
-              objectFit: "contain",
-              marginBottom: 16,
-            }}
+            className="pokemon-image"
           />
-          <div style={{ marginBottom: 16 }}>
-            <span
-              style={{
-                fontSize: 32,
-                fontWeight: 700,
-                color: "#3b4cca",
-                textTransform: "capitalize",
-              }}
-            >
-              {pokemonDetails.name}
-            </span>
-            <span style={{ fontSize: 24, color: "#bdbdbd", marginLeft: 12 }}>
-              {getPokemonNumber(num)}
-            </span>
+          <div className="pokemon-name-container">
+            <span className="pokemon-name">{pokemonDetails.name}</span>
+            <span className="pokemon-number">{getPokemonNumber(num)}</span>
           </div>
-          <div style={{ marginBottom: 16 }}>
+          <div className="pokemon-types">
             {pokemonDetails.types.map((typeObj) => (
               <span
                 key={typeObj.type.name}
@@ -108,29 +87,32 @@ const PokemonPage = () => {
             }}
           />
         </div>
-        <div style={{ flex: 1 }}>
-          <h3 style={{ marginTop: 0 }}>About</h3>
-          <p style={{ fontSize: 16, color: "#444" }}>
-            {pokemonSpecies.flavor_text_entries
-              ?.find((entry) => entry.language.name === "en")
-              ?.flavor_text.replace(/\f/g, " ")}
-          </p>
-          <div style={{ margin: "18px 0" }}>
-            <strong>Height:</strong>{" "}
-            {metersToFeetInches(pokemonDetails.height / 10)}
-            <br />
-            <strong>Weight:</strong> {kgToPounds(pokemonDetails.weight / 10)}
-            <br />
-            <strong>Base Experience:</strong> {pokemonDetails.base_experience}
-            <br />
-            <strong>Abilities:</strong>{" "}
-            {pokemonDetails.abilities.map((a) => a.ability.name).join(", ")}
-            <br />
-            <strong>Types:</strong>{" "}
-            {pokemonDetails.types.map((t) => t.type.name).join(", ")}
-            <br />
-            <strong>Generation:</strong> {pokemonSpecies.generation.name}
-            <br />
+        <div className="pokemon-right-section">
+          <div className="pokemon-info-card">
+            <div className="pokemon-info-group">
+              <div className="pokemon-info-label">Height</div>
+              <div className="pokemon-info-value">
+                {metersToFeetInches(pokemonDetails.height / 10)}
+              </div>
+              <div className="pokemon-info-label">Weight</div>
+              <div className="pokemon-info-value">
+                {kgToPounds(pokemonDetails.weight / 10)}
+              </div>
+              <div className="pokemon-info-label">Gender</div>
+              <div className="pokemon-info-gender">
+                {getGenderIcons(pokemonSpecies)}
+              </div>
+            </div>
+            <div className="pokemon-info-group">
+              <div className="pokemon-info-label">Category</div>
+              <div className="pokemon-info-value">
+                {getGenus(pokemonSpecies)}
+              </div>
+              <div className="pokemon-info-label">Abilities</div>
+              <div className="pokemon-info-value">
+                {pokemonDetails.abilities.map((a) => a.ability.name).join(", ")}
+              </div>
+            </div>
           </div>
         </div>
       </div>

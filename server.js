@@ -3,12 +3,22 @@ import cors from "cors";
 
 const app = express();
 const port = 9009;
+export default app;
 
 // Middleware
 app.use(
   cors({
     origin:
-      process.env.NODE_ENV === "production"
+      process.env.VERCEL === "1"
+        ? [
+            process.env.VERCEL_URL
+              ? `https://${process.env.VERCEL_URL}`
+              : "https://yourdomain.com",
+            process.env.VERCEL_BRANCH_URL
+              ? `https://${process.env.VERCEL_BRANCH_URL}`
+              : null,
+          ].filter(Boolean)
+        : process.env.NODE_ENV === "production"
         ? ["https://yourdomain.com"]
         : ["http://localhost:3000", "http://localhost:5174"],
     credentials: true,
@@ -38,7 +48,7 @@ const pokemonTeams = new Map();
 const pokemonFavorites = new Map();
 
 // Error handling middleware
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
   console.error(err.stack);
   res.status(500).json({ error: "Something went wrong!" });
 });
@@ -146,6 +156,9 @@ app.delete("/api/favorites/:name", (req, res) => {
   res.status(200).json({ message: `${pokemonName} removed from favorites` });
 });
 
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
-});
+// Only listen in development (not in Vercel serverless environment)
+if (process.env.NODE_ENV !== "production" || process.env.VERCEL !== "1") {
+  app.listen(port, () => {
+    console.log(`Server running at http://localhost:${port}`);
+  });
+}

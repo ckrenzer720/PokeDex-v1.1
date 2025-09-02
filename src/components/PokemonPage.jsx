@@ -48,13 +48,9 @@ const PokemonPage = () => {
 
   return (
     <div className="pokemon-details-page">
-      <div className="pokemon-details-container">
-        <div className="pokemon-left-section">
-          <img
-            src={pokemonDetails.sprites.front_default}
-            alt={pokemonDetails.name}
-            className="pokemon-image"
-          />
+      <div className="pokemon-trading-card">
+        {/* Card Header */}
+        <div className="card-header">
           <div className="pokemon-name-container">
             <span className="pokemon-name">{pokemonDetails.name}</span>
             <span className="pokemon-number">{getPokemonNumber(num)}</span>
@@ -64,30 +60,25 @@ const PokemonPage = () => {
               <span
                 key={typeObj.type.name}
                 className={`type-badge type-${typeObj.type.name}`}
-                style={{ marginRight: 8 }}
               >
                 {typeObj.type.name.charAt(0).toUpperCase() +
                   typeObj.type.name.slice(1)}
               </span>
             ))}
           </div>
-          <PokemonDetails
-            pokemon={{
-              ...pokemonDetails,
-              stats: pokemonDetails.stats.map((s) => ({
-                name:
-                  s.stat.name === "special-attack"
-                    ? "Special Attack"
-                    : s.stat.name === "special-defense"
-                    ? "Special Defense"
-                    : s.stat.name.charAt(0).toUpperCase() +
-                      s.stat.name.slice(1),
-                value: s.base_stat,
-              })),
-            }}
+        </div>
+
+        {/* Card Image Section */}
+        <div className="card-image-section">
+          <img
+            src={pokemonDetails.sprites.front_default}
+            alt={pokemonDetails.name}
+            className="pokemon-card-image"
           />
         </div>
-        <div className="pokemon-right-section">
+
+        {/* Card Info Section */}
+        <div className="card-info-section">
           <div className="pokemon-info-card">
             <div className="pokemon-info-group">
               <div className="pokemon-info-label">Height</div>
@@ -114,6 +105,25 @@ const PokemonPage = () => {
               </div>
             </div>
           </div>
+        </div>
+
+        {/* Card Stats Section */}
+        <div className="card-stats-section">
+          <PokemonDetails
+            pokemon={{
+              ...pokemonDetails,
+              stats: pokemonDetails.stats.map((s) => ({
+                name:
+                  s.stat.name === "special-attack"
+                    ? "Special Attack"
+                    : s.stat.name === "special-defense"
+                    ? "Special Defense"
+                    : s.stat.name.charAt(0).toUpperCase() +
+                      s.stat.name.slice(1),
+                value: s.base_stat,
+              })),
+            }}
+          />
         </div>
       </div>
     </div>

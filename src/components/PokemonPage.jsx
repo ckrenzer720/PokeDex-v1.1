@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { useParams, useNavigate } from "react-router-do";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   useGetPokemonDetailsQuery,
   useGetPokemonSpeciesQuery,

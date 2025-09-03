@@ -201,6 +201,7 @@ body {
   align-items: center;
   min-height: 200px;
   border-bottom: 2px solid #e9ecef;
+  position: relative;
 }
 
 .pokemon-card-image {
@@ -213,6 +214,84 @@ body {
 
 .pokemon-card-image:hover {
   transform: scale(1.05);
+}
+
+/* Pokemon Navigation Arrows */
+.pokemon-nav-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  border: 2px solid #3b4cca;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ffcb05 0%, #ff6b35 100%);
+  color: #3b4cca;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  z-index: 10;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.pokemon-nav-arrow:hover:not(:disabled) {
+  background: linear-gradient(135deg, #3b4cca 0%, #2a75bb 100%);
+  color: #ffcb05;
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.pokemon-nav-arrow:disabled {
+  background: #e9ecef;
+  color: #6c757d;
+  border-color: #6c757d;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.pokemon-nav-arrow-left {
+  left: 10px;
+}
+
+.pokemon-nav-arrow-right {
+  right: 10px;
+}
+
+/* Responsive design for navigation arrows */
+@media (max-width: 768px) {
+  .pokemon-nav-arrow {
+    width: 35px;
+    height: 35px;
+    font-size: 1.2rem;
+  }
+  
+  .pokemon-nav-arrow-left {
+    left: 5px;
+  }
+  
+  .pokemon-nav-arrow-right {
+    right: 5px;
+  }
+}
+
+@media (max-width: 480px) {
+  .pokemon-nav-arrow {
+    width: 30px;
+    height: 30px;
+    font-size: 1rem;
+  }
+  
+  .pokemon-nav-arrow-left {
+    left: 2px;
+  }
+  
+  .pokemon-nav-arrow-right {
+    right: 2px;
+  }
 }
 
 /* Card Info Section */

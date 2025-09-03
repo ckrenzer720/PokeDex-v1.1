@@ -1,5 +1,5 @@
-import React from "react";
-import { useParams } from "react-router-dom";
+import React, { useCallback } from "react";
+import { useParams, useNavigate } from "react-router-do";
 import {
   useGetPokemonDetailsQuery,
   useGetPokemonSpeciesQuery,
@@ -38,10 +38,41 @@ const getGenderIcons = (species) => {
 
 const PokemonPage = () => {
   const { num } = useParams();
+  const navigate = useNavigate();
   const { data: pokemonDetails, isLoading: isDetailsLoading } =
     useGetPokemonDetailsQuery(num);
   const { data: pokemonSpecies, isLoading: isSpeciesLoading } =
     useGetPokemonSpeciesQuery(num);
+
+  const currentNum = parseInt(num);
+  const isFirstPokemon = currentNum <= 1;
+  const isLastPokemon = currentNum >= 1010; // Assuming we have up to 1010 Pokemon
+
+  const handlePreviousPokemon = useCallback(() => {
+    if (!isFirstPokemon) {
+      navigate(`/pokemon/${currentNum - 1}`);
+    }
+  }, [isFirstPokemon, navigate, currentNum]);
+
+  const handleNextPokemon = useCallback(() => {
+    if (!isLastPokemon) {
+      navigate(`/pokemon/${currentNum + 1}`);
+    }
+  }, [isLastPokemon, navigate, currentNum]);
+
+  // Keyboard navigation
+  React.useEffect(() => {
+    const handleKeyPress = (event) => {
+      if (event.key === "ArrowLeft" && !isFirstPokemon) {
+        handlePreviousPokemon();
+      } else if (event.key === "ArrowRight" && !isLastPokemon) {
+        handleNextPokemon();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyPress);
+    return () => window.removeEventListener("keydown", handleKeyPress);
+  }, [isFirstPokemon, isLastPokemon, handlePreviousPokemon, handleNextPokemon]);
 
   if (isDetailsLoading || isSpeciesLoading) return <PokeballLoader />;
   if (!pokemonDetails || !pokemonSpecies) return <p>Pokémon not found.</p>;
@@ -70,11 +101,27 @@ const PokemonPage = () => {
 
         {/* Card Image Section */}
         <div className="card-image-section">
+          <button
+            className="pokemon-nav-arrow pokemon-nav-arrow-left"
+            onClick={handlePreviousPokemon}
+            disabled={isFirstPokemon}
+            title="Previous Pokemon"
+          >
+            ←
+          </button>
           <img
             src={pokemonDetails.sprites.front_default}
             alt={pokemonDetails.name}
             className="pokemon-card-image"
           />
+          <button
+            className="pokemon-nav-arrow pokemon-nav-arrow-right"
+            onClick={handleNextPokemon}
+            disabled={isLastPokemon}
+            title="Next Pokemon"
+          >
+            →
+          </button>
         </div>
 
         {/* Card Info Section */}

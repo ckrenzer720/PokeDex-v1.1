@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useAuth0 } from "@auth0/auth0-react";
 import {
   useGetPokemonCollectionQuery,
   useRemovePokemonMutation,
@@ -9,8 +8,7 @@ import {
 } from "../state/PokeCartApi";
 import PokeballLoader from "./PokeballLoader";
 
-const Profile = () => {
-  const { user, isLoading, error, isAuthenticated } = useAuth0();
+const Profile = ({ user, isAuthenticated }) => {
   const { data: team } = useGetPokemonCollectionQuery();
   const { data: favorites } = useGetFavoritesQuery();
   const [removePokemon] = useRemovePokemonMutation();
@@ -72,31 +70,6 @@ const Profile = () => {
       }
     }
   };
-
-  if (isLoading) {
-    return (
-      <div className="profile-container">
-        <div className="id-card">
-          <div className="loading-message">
-            <PokeballLoader />
-            <p>Loading profile...</p>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="profile-container">
-        <div className="id-card">
-          <div className="error-message">
-            Error loading profile: {error.message}
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   if (!isAuthenticated || !user) {
     return (

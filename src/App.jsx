@@ -1,18 +1,34 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./styles/App.css";
 import PokeList from "./components/PokeList";
 import Profile from "./components/Profile";
-import { useAuth0 } from "@auth0/auth0-react";
+import LoginForm from "./components/LoginForm";
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import PokemonPage from "./components/PokemonPage";
 
 function App() {
-  const { loginWithRedirect, logout, isAuthenticated } = useAuth0();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState(null);
 
-  const handleLogin = () => {
-    loginWithRedirect({
-      appState: { returnTo: window.location.pathname },
-    });
+  // Check for existing authentication on app load
+  useEffect(() => {
+    const savedUser = localStorage.getItem('pokemonUser');
+    if (savedUser) {
+      setUser(JSON.parse(savedUser));
+      setIsAuthenticated(true);
+    }
+  }, []);
+
+  const handleLogin = (userData) => {
+    setUser(userData);
+    setIsAuthenticated(true);
+    localStorage.setItem('pokemonUser', JSON.stringify(userData));
+  };
+
+  const handleLogout = () => {
+    setUser(null);
+    setIsAuthenticated(false);
+    localStorage.removeItem('pokemonUser');
   };
 
   return (
@@ -26,14 +42,16 @@ function App() {
           </h1>
           <div>
             {!isAuthenticated ? (
-              <button className="pokemon-login-btn" onClick={handleLogin}>
-                Trainer, Log In!
-              </button>
+              <Link to="/login">
+                <button className="pokemon-login-btn">
+                  Trainer, Log In!
+                </button>
+              </Link>
             ) : (
               <>
                 <button
                   className="pokemon-login-btn"
-                  onClick={() => logout({ returnTo: window.location.origin })}
+                  onClick={handleLogout}
                 >
                   Log Out
                 </button>
@@ -52,9 +70,16 @@ function App() {
           <Routes>
             <Route
               path="/"
-              element={<PokeList isAuthenticated={isAuthenticated} />}
+              element={<PokeList isAuthenticated={isAuthenticated} user={user} />}
             />
-            <Route path="/profile" element={<Profile />} />
+            <Route 
+              path="/login" 
+              element={<LoginForm onLogin={handleLogin} />} 
+            />
+            <Route 
+              path="/profile" 
+              element={<Profile user={user} isAuthenticated={isAuthenticated} />} 
+            />
             <Route path="/pokemon/:num" element={<PokemonPage />} />
           </Routes>
         </main>

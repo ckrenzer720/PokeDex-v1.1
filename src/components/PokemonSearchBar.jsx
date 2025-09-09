@@ -8,6 +8,18 @@ const PokemonSearchBar = ({ onSearch }) => {
     onSearch({ search, type });
   };
 
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+  };
+
+  const handleClear = () => {
+    setSearch("");
+    setType("");
+    onSearch({ search: "", type: "" });
+  };
+
   return (
     <div style={{ marginBottom: "20px" }}>
       <input
@@ -15,6 +27,7 @@ const PokemonSearchBar = ({ onSearch }) => {
         placeholder="Search by name"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
+        onKeyPress={handleKeyPress}
         style={{ marginRight: "10px" }}
       />
       <select
@@ -44,6 +57,9 @@ const PokemonSearchBar = ({ onSearch }) => {
         <option value="Stellar">Stellar</option>
       </select>
       <button onClick={handleSearch}>Search</button>
+      <button onClick={handleClear} style={{ marginLeft: "10px" }}>
+        Clear
+      </button>
     </div>
   );
 };

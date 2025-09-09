@@ -55,6 +55,10 @@ const PokeList = ({ isAuthenticated }) => {
     ? data?.pokemon
         ?.map((p) => p.pokemon) // Handle type-filtered response
         .slice(offset, offset + limit) || [] // Apply limit and offset
+    : filters.search
+    ? data?.id
+      ? [data]
+      : [] // Handle single Pokemon search result
     : cachedData[page] || [];
 
   const handleSearch = (newFilters) => {
@@ -67,7 +71,9 @@ const PokeList = ({ isAuthenticated }) => {
 
   const handlePokemonClick = (pokemon) => {
     // Navigate to the details page for this Pokémon
-    const num = pokemon.url.split("/").slice(-2, -1)[0];
+    const num = pokemon.url
+      ? pokemon.url.split("/").slice(-2, -1)[0]
+      : pokemon.id;
     navigate(`/pokemon/${num}`);
   };
 
@@ -80,7 +86,11 @@ const PokeList = ({ isAuthenticated }) => {
     try {
       const pokemonInfo = {
         name: pokemon.name,
-        img: pokemon.sprites.front_default,
+        img:
+          pokemon.sprites?.front_default ||
+          `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${
+            pokemon.url ? pokemon.url.split("/").slice(-2, -1)[0] : pokemon.id
+          }.png`,
       };
       await addPokemon(pokemonInfo).unwrap();
       alert(`${pokemon.name} has been added to your team!`);
@@ -138,6 +148,23 @@ const PokeList = ({ isAuthenticated }) => {
     return <p>Failed to load Pokémon. Please try again later.</p>;
   }
 
+  // Show message when search returns no results
+  if (filters.search && pokemonList.length === 0 && !isLoading) {
+    return (
+      <div className="pokemon-container">
+        <div className="header">
+          <PokemonSearchBar onSearch={handleSearch} />
+        </div>
+        <div className="main-content">
+          <p>
+            No Pokémon found with the name "{filters.search}". Please try a
+            different search term.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="pokemon-container">
       <div className="header">
@@ -175,7 +202,9 @@ const PokeList = ({ isAuthenticated }) => {
               <h3>{pokemon.name}</h3>
               <img
                 src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${
-                  pokemon.url.split("/").slice(-2, -1)[0]
+                  pokemon.url
+                    ? pokemon.url.split("/").slice(-2, -1)[0]
+                    : pokemon.id
                 }.png`}
                 alt={pokemon.name}
               />

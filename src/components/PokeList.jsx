@@ -8,6 +8,7 @@ import { useAddPokemonMutation } from "../state/PokeCartApi";
 import PokemonSearchBar from "./PokemonSearchBar";
 import PokeballLoader from "./PokeballLoader";
 import PokeballButton from "./PokeballButton";
+import AddToTeamButton from "./AddToTeamButton";
 import { useNavigate } from "react-router-dom";
 
 const PokeList = ({ isAuthenticated }) => {
@@ -207,6 +208,24 @@ const PokeList = ({ isAuthenticated }) => {
                     : pokemon.id
                 }.png`}
                 alt={pokemon.name}
+              />
+              <AddToTeamButton
+                pokemon={{
+                  ...pokemon,
+                  id: pokemon.url
+                    ? pokemon.url.split("/").slice(-2, -1)[0]
+                    : pokemon.id,
+                  sprites: {
+                    front_default: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${
+                      pokemon.url
+                        ? pokemon.url.split("/").slice(-2, -1)[0]
+                        : pokemon.id
+                    }.png`,
+                  },
+                }}
+                isAuthenticated={isAuthenticated}
+                size="small"
+                showText={false}
               />
             </div>
           ))}

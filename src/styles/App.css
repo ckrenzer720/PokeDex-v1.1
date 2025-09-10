@@ -1469,3 +1469,148 @@ body {
     font-size: 0.7rem;
   }
 }
+
+/* Add to Team Button Styles */
+.add-to-team-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px;
+  background: transparent;
+  color: #3b4cca;
+  border: none;
+  border-radius: 0;
+  font-family: "PokemonFont", sans-serif;
+  font-size: 0.8rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: none;
+  position: relative;
+  overflow: visible;
+}
+
+.add-to-team-btn:hover {
+  background: transparent;
+  transform: scale(1.1);
+  box-shadow: none;
+}
+
+.add-to-team-btn:active {
+  transform: scale(0.95);
+}
+
+.add-to-team-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.add-to-team-btn.small {
+  padding: 2px;
+  font-size: 0.7rem;
+  gap: 4px;
+}
+
+.add-to-team-btn.small .pokeball-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.add-to-team-btn.large {
+  padding: 8px;
+  font-size: 1rem;
+  gap: 8px;
+}
+
+.add-to-team-btn.large .pokeball-icon {
+  width: 40px;
+  height: 40px;
+}
+
+.pokeball-icon {
+  width: 32px;
+  height: 32px;
+  transition: transform 0.3s ease;
+  background: transparent;
+  border: none;
+  object-fit: contain;
+  display: block;
+  mix-blend-mode: multiply;
+}
+
+.add-to-team-btn:hover .pokeball-icon {
+  transform: rotate(15deg);
+}
+
+.checkmark {
+  color: #28a745;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+.pokeball-spinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pokeball-loader {
+  width: 16px;
+  height: 16px;
+  border: 2px solid #3b4cca;
+  border-top: 2px solid transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Pokemon card specific button positioning */
+.pokemon-card .add-to-team-btn {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  z-index: 10;
+  font-size: 0.7rem;
+  padding: 2px;
+}
+
+.pokemon-card .add-to-team-btn.small {
+  padding: 2px;
+  font-size: 0.6rem;
+}
+
+/* Pokemon details page button */
+.pokemon-details-page .add-to-team-btn {
+  margin: 20px auto;
+  display: block;
+  font-size: 1rem;
+  padding: 12px 20px;
+}
+
+/* Card team section */
+.card-team-section {
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  border-top: 2px solid #3b4cca;
+}
+
+/* Team section in profile */
+.team-pokemon .add-to-team-btn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  padding: 4px 6px;
+  font-size: 0.6rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.team-pokemon:hover .add-to-team-btn {
+  opacity: 1;
+}

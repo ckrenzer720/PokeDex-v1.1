@@ -12,7 +12,7 @@ function App() {
 
   // Check for existing authentication on app load
   useEffect(() => {
-    const savedUser = localStorage.getItem('pokemonUser');
+    const savedUser = localStorage.getItem("pokemonUser");
     if (savedUser) {
       setUser(JSON.parse(savedUser));
       setIsAuthenticated(true);
@@ -22,13 +22,13 @@ function App() {
   const handleLogin = (userData) => {
     setUser(userData);
     setIsAuthenticated(true);
-    localStorage.setItem('pokemonUser', JSON.stringify(userData));
+    localStorage.setItem("pokemonUser", JSON.stringify(userData));
   };
 
   const handleLogout = () => {
     setUser(null);
     setIsAuthenticated(false);
-    localStorage.removeItem('pokemonUser');
+    localStorage.removeItem("pokemonUser");
   };
 
   return (
@@ -43,16 +43,11 @@ function App() {
           <div>
             {!isAuthenticated ? (
               <Link to="/login">
-                <button className="pokemon-login-btn">
-                  Trainer, Log In!
-                </button>
+                <button className="pokemon-login-btn">Trainer, Log In!</button>
               </Link>
             ) : (
               <>
-                <button
-                  className="pokemon-login-btn"
-                  onClick={handleLogout}
-                >
+                <button className="pokemon-login-btn" onClick={handleLogout}>
                   Log Out
                 </button>
               </>
@@ -70,17 +65,24 @@ function App() {
           <Routes>
             <Route
               path="/"
-              element={<PokeList isAuthenticated={isAuthenticated} user={user} />}
+              element={
+                <PokeList isAuthenticated={isAuthenticated} user={user} />
+              }
             />
-            <Route 
-              path="/login" 
-              element={<LoginForm onLogin={handleLogin} />} 
+            <Route
+              path="/login"
+              element={<LoginForm onLogin={handleLogin} />}
             />
-            <Route 
-              path="/profile" 
-              element={<Profile user={user} isAuthenticated={isAuthenticated} />} 
+            <Route
+              path="/profile"
+              element={
+                <Profile user={user} isAuthenticated={isAuthenticated} />
+              }
             />
-            <Route path="/pokemon/:num" element={<PokemonPage />} />
+            <Route
+              path="/pokemon/:num"
+              element={<PokemonPage isAuthenticated={isAuthenticated} />}
+            />
           </Routes>
         </main>
       </div>

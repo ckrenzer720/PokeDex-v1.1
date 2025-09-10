@@ -6,6 +6,7 @@ import {
 } from "../state/PokedexApi";
 import PokeballLoader from "./PokeballLoader";
 import PokemonDetails from "./PokemonDetails";
+import AddToTeamButton from "./AddToTeamButton";
 import "../styles/App.css";
 
 const getPokemonNumber = (num) => `#${String(num).padStart(4, "0")}`;
@@ -36,7 +37,7 @@ const getGenderIcons = (species) => {
   return "♂ ♀";
 };
 
-const PokemonPage = () => {
+const PokemonPage = ({ isAuthenticated }) => {
   const { num } = useParams();
   const navigate = useNavigate();
   const { data: pokemonDetails, isLoading: isDetailsLoading } =
@@ -170,6 +171,16 @@ const PokemonPage = () => {
                 value: s.base_stat,
               })),
             }}
+          />
+        </div>
+
+        {/* Add to Team Button */}
+        <div className="card-team-section">
+          <AddToTeamButton
+            pokemon={pokemonDetails}
+            isAuthenticated={isAuthenticated}
+            size="large"
+            showText={true}
           />
         </div>
       </div>

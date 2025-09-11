@@ -1477,7 +1477,7 @@ body {
   gap: 6px;
   padding: 4px;
   background: transparent;
-  color: #3b4cca;
+  color: #333;
   border: none;
   border-radius: 0;
   font-family: "PokemonFont", sans-serif;
@@ -1536,7 +1536,7 @@ body {
   border: none;
   object-fit: contain;
   display: block;
-  mix-blend-mode: multiply;
+  filter: none;
 }
 
 .add-to-team-btn:hover .pokeball-icon {
@@ -1596,8 +1596,8 @@ body {
 .card-team-section {
   padding: 20px;
   text-align: center;
-  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-  border-top: 2px solid #3b4cca;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-top: 2px solid #ddd;
 }
 
 /* Team section in profile */

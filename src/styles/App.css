@@ -131,7 +131,7 @@ body {
 }
 
 .pokemon-trading-card::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -268,11 +268,11 @@ body {
     height: 35px;
     font-size: 1.2rem;
   }
-  
+
   .pokemon-nav-arrow-left {
     left: 5px;
   }
-  
+
   .pokemon-nav-arrow-right {
     right: 5px;
   }
@@ -284,11 +284,11 @@ body {
     height: 30px;
     font-size: 1rem;
   }
-  
+
   .pokemon-nav-arrow-left {
     left: 2px;
   }
-  
+
   .pokemon-nav-arrow-right {
     right: 2px;
   }
@@ -316,7 +316,7 @@ body {
 }
 
 .login-card::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -438,15 +438,15 @@ body {
     padding: 30px 20px;
     margin: 10px;
   }
-  
+
   .login-header h2 {
     font-size: 1.5rem;
   }
-  
+
   .form-input {
     padding: 10px 12px;
   }
-  
+
   .login-submit-btn {
     padding: 12px 20px;
     font-size: 1rem;
@@ -633,16 +633,16 @@ body {
   bottom: 100%;
   left: 50%;
   transform: translateX(-50%);
-  padding: 4px 8px;
+  padding: 6px 12px;
   background-color: #3b4cca;
   color: #fff;
   font-size: 0.8rem;
   border-radius: 4px;
   white-space: nowrap;
-  max-width: 120px;
+  max-width: 200px;
   text-align: center;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  overflow: visible;
+  text-overflow: unset;
   opacity: 0;
   visibility: hidden;
   transition: all 0.3s ease;
@@ -1411,60 +1411,60 @@ body {
     max-width: 350px;
     margin: 0 10px;
   }
-  
+
   .pokemon-card-image {
     width: 150px;
     height: 150px;
   }
-  
+
   .card-header {
     padding: 12px 15px 8px;
   }
-  
+
   .pokemon-name {
     font-size: 1.2rem;
   }
-  
+
   .pokemon-number {
     font-size: 0.9rem;
   }
-  
+
   .card-image-section {
     padding: 15px;
     min-height: 160px;
   }
-  
+
   .card-info-section,
   .card-stats-section {
     padding: 12px 15px;
   }
-  
+
   .pokemon-info-card {
     padding: 12px;
     gap: 8px 15px;
   }
-  
+
   .pokemon-info-label {
     font-size: 0.7rem;
   }
-  
+
   .pokemon-info-value {
     font-size: 0.8rem;
   }
-  
+
   .stats-section {
     padding: 12px;
   }
-  
+
   .stats-section h3 {
     font-size: 0.9rem;
   }
-  
+
   .stat-label {
     font-size: 0.7rem;
     min-width: 70px;
   }
-  
+
   .stat-value {
     font-size: 0.7rem;
   }
@@ -1565,8 +1565,12 @@ body {
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* Pokemon card specific button positioning */

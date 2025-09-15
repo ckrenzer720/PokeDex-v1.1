@@ -87,9 +87,9 @@ body {
   display: grid;
   grid-template-columns: repeat(
     auto-fit,
-    minmax(200px, 1fr)
-  ); /* Increase card size */
-  gap: 20px;
+    minmax(180px, 1fr)
+  ); /* Wider cards to accommodate full names */
+  gap: 15px; /* Slightly larger gap for better spacing */
   padding: 20px;
   background-color: #fff;
   border-radius: 8px;
@@ -99,8 +99,8 @@ body {
 
 .pokemon-list.grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 15px; /* Slightly larger gap for better spacing */
   padding: 20px;
 }
 
@@ -560,10 +560,10 @@ body {
 /* Pokémon card styling */
 .pokemon-card {
   border: 2px solid #3b4cca;
-  border-radius: 8px;
-  padding: 20px;
-  padding-bottom: 40px; /* Add extra padding at bottom for the button */
-  padding-right: 50px; /* Add extra right padding for tooltip */
+  border-radius: 6px; /* Slightly smaller border radius */
+  padding: 10px; /* Much smaller padding for compact cards */
+  padding-bottom: 30px; /* Add extra padding at bottom for the button */
+  padding-right: 35px; /* Add extra right padding for tooltip */
   text-align: center;
   font-size: small;
   background-color: #f7f7f7;
@@ -573,7 +573,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  min-height: 200px;
+  min-height: 140px; /* Much smaller height for compact cards */
   position: relative;
   overflow: visible; /* Ensure button is not cut off */
 }
@@ -589,14 +589,15 @@ body {
 }
 
 .pokemon-card h3 {
-  font-size: 1.2rem;
-  margin: 10px 0;
+  font-size: 1rem; /* Good readable font size */
+  margin: 8px 0; /* Adequate margin */
   color: #3b4cca;
   font-weight: bold;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  overflow: visible; /* Show full text */
+  text-overflow: unset; /* No ellipsis */
+  white-space: nowrap; /* Keep text on one line */
   width: 100%;
+  line-height: 1.2; /* Good line height */
 }
 
 .pokemon-card button {
@@ -1403,6 +1404,54 @@ body {
     rgba(255, 255, 255, 0.2) 50%,
     rgba(255, 255, 255, 0.1) 100%
   );
+}
+
+/* Responsive Design for Grid Layout */
+@media (max-width: 1200px) {
+  .pokemon-list.grid {
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .pokemon-list.grid {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
+    padding: 15px;
+  }
+
+  .pokemon-card {
+    padding: 12px;
+    padding-bottom: 30px;
+    padding-right: 40px;
+    min-height: 160px;
+  }
+
+  .pokemon-card h3 {
+    font-size: 0.9rem;
+    margin: 6px 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .pokemon-list.grid {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 8px;
+    padding: 10px;
+  }
+
+  .pokemon-card {
+    padding: 10px;
+    padding-bottom: 25px;
+    padding-right: 35px;
+    min-height: 140px;
+  }
+
+  .pokemon-card h3 {
+    font-size: 0.8rem;
+    margin: 4px 0;
+  }
 }
 
 /* Responsive Design for Trading Card */

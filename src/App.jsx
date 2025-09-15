@@ -37,7 +37,7 @@ function App() {
         <header className="app-header">
           <h1>
             <Link to="/" style={{ color: "inherit", textDecoration: "none" }}>
-              PokéDex
+              Pokémon PokéDex
             </Link>
           </h1>
           <div>

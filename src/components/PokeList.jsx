@@ -29,15 +29,21 @@ const PokeList = ({ isAuthenticated }) => {
     offset,
   });
 
-  const { data: pokemonDetails, isLoading: isDetailsLoading } =
-    useGetPokemonDetailsQuery(selectedPokemon, {
-      skip: !selectedPokemon, // Skip the query if no Pokémon is selected
-    });
+  const {
+    data: pokemonDetails,
+    isLoading: isDetailsLoading,
+    error: detailsError,
+  } = useGetPokemonDetailsQuery(selectedPokemon, {
+    skip: !selectedPokemon, // Skip the query if no Pokémon is selected
+  });
 
-  const { data: pokemonSpecies, isLoading: isSpeciesLoading } =
-    useGetPokemonSpeciesQuery(selectedPokemon, {
-      skip: !selectedPokemon, // Skip the query if no Pokémon is selected
-    });
+  const {
+    data: pokemonSpecies,
+    isLoading: isSpeciesLoading,
+    error: speciesError,
+  } = useGetPokemonSpeciesQuery(selectedPokemon, {
+    skip: !selectedPokemon, // Skip the query if no Pokémon is selected
+  });
 
   const totalPages = data ? Math.ceil(data.count / limit) : 0;
 
@@ -58,8 +64,8 @@ const PokeList = ({ isAuthenticated }) => {
         .slice(offset, offset + limit) || [] // Apply limit and offset
     : filters.search
     ? data?.id
-      ? [data]
-      : [] // Handle single Pokemon search result
+      ? [data] // Handle single Pokemon search result
+      : [] // No results for search
     : cachedData[page] || [];
 
   const handleSearch = (newFilters) => {
@@ -105,6 +111,11 @@ const PokeList = ({ isAuthenticated }) => {
     const pageNumbers = [];
     const maxVisiblePages = 5;
 
+    // Ensure totalPages is a valid number
+    if (!totalPages || totalPages <= 0) {
+      return null;
+    }
+
     if (totalPages <= maxVisiblePages) {
       for (let i = 1; i <= totalPages; i++) {
         pageNumbers.push(i);
@@ -134,10 +145,10 @@ const PokeList = ({ isAuthenticated }) => {
       ) : (
         <button
           key={`page-${pageNumber}`}
-          onClick={() => setPage(pageNumber)}
-          className={page === pageNumber ? "active" : ""}
+          onClick={() => setPage(Number(pageNumber))}
+          className={page === Number(pageNumber) ? "active" : ""}
         >
-          {pageNumber}
+          {String(pageNumber)}
         </button>
       )
     );
@@ -146,7 +157,36 @@ const PokeList = ({ isAuthenticated }) => {
   if (isLoading && !cachedData[page]) return <PokeballLoader />;
   if (error) {
     console.error("Error fetching Pokémon:", error);
-    return <p>Failed to load Pokémon. Please try again later.</p>;
+
+    // Handle specific error cases
+    if (error.status === 404 && filters.search) {
+      return (
+        <div className="pokemon-container">
+          <div className="header">
+            <PokemonSearchBar onSearch={handleSearch} />
+          </div>
+          <div className="main-content">
+            <p style={{ color: "red", textAlign: "center", marginTop: "20px" }}>
+              Pokemon "{filters.search}" not found. Please check the spelling
+              and try again.
+            </p>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div className="pokemon-container">
+        <div className="header">
+          <PokemonSearchBar onSearch={handleSearch} />
+        </div>
+        <div className="main-content">
+          <p style={{ color: "red", textAlign: "center", marginTop: "20px" }}>
+            Failed to load Pokémon. Please try again later.
+          </p>
+        </div>
+      </div>
+    );
   }
 
   // Show message when search returns no results
@@ -237,6 +277,16 @@ const PokeList = ({ isAuthenticated }) => {
             </button>
             {isDetailsLoading || isSpeciesLoading ? (
               <PokeballLoader />
+            ) : detailsError || speciesError ? (
+              <div>
+                <p style={{ color: "red" }}>
+                  Error loading Pokemon details. Please try again.
+                </p>
+                {detailsError &&
+                  console.error("Pokemon details error:", detailsError)}
+                {speciesError &&
+                  console.error("Pokemon species error:", speciesError)}
+              </div>
             ) : (
               pokemonDetails &&
               pokemonSpecies && (

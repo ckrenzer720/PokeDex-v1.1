@@ -8,14 +8,18 @@
     "server": "node server.js",
     "dev:all": "concurrently \"npm run dev\" \"npm run server\"",
     "build": "vite build",
+    "build:analyze": "vite build --mode analyze",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "analyze": "npm run build:analyze && npx vite-bundle-analyzer dist/stats.html"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.0.1",
     "axios": "^1.6.2",
+    "compression": "^1.7.4",
     "cors": "^2.8.5",
     "express": "^4.18.2",
+    "express-rate-limit": "^7.1.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^9.0.4",
@@ -31,6 +35,8 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
     "globals": "^13.24.0",
-    "vite": "^5.0.10"
+    "rollup-plugin-visualizer": "^5.9.2",
+    "vite": "^5.0.10",
+    "vite-bundle-analyzer": "^0.7.0"
   }
 }

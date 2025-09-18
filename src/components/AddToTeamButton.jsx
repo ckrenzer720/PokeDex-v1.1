@@ -1,83 +1,101 @@
-import React, { useState } from "react";
+import React, { useState, useCallback, useMemo } from "react";
 import { useAddPokemonMutation } from "../state/PokeCartApi";
 
-const AddToTeamButton = ({
-  pokemon,
-  isAuthenticated,
-  className = "",
-  showText = true,
-  size = "medium",
-}) => {
-  const [addPokemon, { isLoading }] = useAddPokemonMutation();
-  const [isAdded, setIsAdded] = useState(false);
+const AddToTeamButton = React.memo(
+  ({
+    pokemon,
+    isAuthenticated,
+    className = "",
+    showText = true,
+    size = "medium",
+  }) => {
+    const [addPokemon, { isLoading }] = useAddPokemonMutation();
+    const [isAdded, setIsAdded] = useState(false);
 
-  const handleAddToTeam = async (e) => {
-    e.stopPropagation(); // Prevent triggering parent click events
+    const handleAddToTeam = useCallback(
+      async (e) => {
+        e.stopPropagation(); // Prevent triggering parent click events
 
-    if (!isAuthenticated) {
-      alert("Please log in to add Pokémon to your team.");
-      return;
-    }
+        if (!isAuthenticated) {
+          alert("Please log in to add Pokémon to your team.");
+          return;
+        }
 
-    try {
-      const pokemonInfo = {
-        name: pokemon.name,
-        img:
-          pokemon.sprites?.front_default ||
-          pokemon.img ||
-          `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${
-            pokemon.id || pokemon.url?.split("/").slice(-2, -1)[0]
-          }.png`,
-      };
+        try {
+          const pokemonInfo = {
+            name: pokemon.name,
+            img:
+              pokemon.sprites?.front_default ||
+              pokemon.img ||
+              `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${
+                pokemon.id || pokemon.url?.split("/").slice(-2, -1)[0]
+              }.png`,
+          };
 
-      await addPokemon(pokemonInfo).unwrap();
-      setIsAdded(true);
-      setTimeout(() => setIsAdded(false), 2000); // Reset after 2 seconds
-    } catch (error) {
-      console.error("Failed to add Pokémon to team:", error);
-      alert("Failed to add Pokémon to team. Please try again.");
-    }
-  };
+          await addPokemon(pokemonInfo).unwrap();
+          setIsAdded(true);
+          setTimeout(() => setIsAdded(false), 2000); // Reset after 2 seconds
+        } catch (error) {
+          console.error("Failed to add Pokémon to team:", error);
+          alert("Failed to add Pokémon to team. Please try again.");
+        }
+      },
+      [pokemon, isAuthenticated, addPokemon]
+    );
 
-  const getButtonContent = () => {
-    if (isLoading) {
-      return (
-        <div className="pokeball-spinner">
-          <div className="pokeball-loader"></div>
-        </div>
-      );
-    }
+    const buttonContent = useMemo(() => {
+      if (isLoading) {
+        return (
+          <div className="pokeball-spinner">
+            <div className="pokeball-loader"></div>
+          </div>
+        );
+      }
 
-    if (isAdded) {
+      if (isAdded) {
+        return (
+          <>
+            <span className="checkmark">✓</span>
+            {showText && <span>Added!</span>}
+          </>
+        );
+      }
+
       return (
         <>
-          <span className="checkmark">✓</span>
-          {showText && <span>Added!</span>}
+          <img
+            src="/pokeball.png"
+            alt="Add to team"
+            className="pokeball-icon"
+          />
+          {showText && <span>Add to Team</span>}
         </>
       );
-    }
+    }, [isLoading, isAdded, showText]);
+
+    const sizeClass = useMemo(
+      () => (size === "small" ? "small" : size === "large" ? "large" : ""),
+      [size]
+    );
+
+    const buttonTitle = useMemo(
+      () => (isAuthenticated ? "Add to your team" : "Log in to add to team"),
+      [isAuthenticated]
+    );
 
     return (
-      <>
-        <img src="/pokeball.png" alt="Add to team" className="pokeball-icon" />
-        {showText && <span>Add to Team</span>}
-      </>
+      <button
+        className={`add-to-team-btn ${className} ${sizeClass}`}
+        onClick={handleAddToTeam}
+        disabled={isLoading}
+        title={buttonTitle}
+      >
+        {buttonContent}
+      </button>
     );
-  };
+  }
+);
 
-  const sizeClass =
-    size === "small" ? "small" : size === "large" ? "large" : "";
-
-  return (
-    <button
-      className={`add-to-team-btn ${className} ${sizeClass}`}
-      onClick={handleAddToTeam}
-      disabled={isLoading}
-      title={isAuthenticated ? "Add to your team" : "Log in to add to team"}
-    >
-      {getButtonContent()}
-    </button>
-  );
-};
+AddToTeamButton.displayName = "AddToTeamButton";
 
 export default AddToTeamButton;

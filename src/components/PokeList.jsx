@@ -9,6 +9,7 @@ import PokemonSearchBar from "./PokemonSearchBar";
 import PokeballLoader from "./PokeballLoader";
 import PokeballButton from "./PokeballButton";
 import AddToTeamButton from "./AddToTeamButton";
+import LazyImage from "./LazyImage";
 import { useNavigate } from "react-router-dom";
 
 const PokeList = ({ isAuthenticated }) => {
@@ -241,13 +242,14 @@ const PokeList = ({ isAuthenticated }) => {
               onClick={() => handlePokemonClick(pokemon)}
             >
               <h3>{pokemon.name}</h3>
-              <img
+              <LazyImage
                 src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${
                   pokemon.url
                     ? pokemon.url.split("/").slice(-2, -1)[0]
                     : pokemon.id
                 }.png`}
                 alt={pokemon.name}
+                className="pokemon-image"
               />
               <AddToTeamButton
                 pokemon={{
@@ -292,9 +294,10 @@ const PokeList = ({ isAuthenticated }) => {
               pokemonSpecies && (
                 <div>
                   <h2>{pokemonDetails.name}</h2>
-                  <img
+                  <LazyImage
                     src={pokemonDetails.sprites.front_default}
                     alt={pokemonDetails.name}
+                    className="pokemon-details-image"
                   />
                   <p>
                     <strong>Height:</strong> {pokemonDetails.height}

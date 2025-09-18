@@ -9,6 +9,8 @@ export const pokedexApi = createApi({
       return headers;
     },
   }),
+  tagTypes: ["Pokemon", "PokemonList", "PokemonSpecies"],
+  keepUnusedDataFor: 300, // Keep data for 5 minutes
   endpoints: (builder) => ({
     getPokemonList: builder.query({
       query: ({ search = "", type = "", limit = 20, offset = 0 } = {}) => {
@@ -23,6 +25,15 @@ export const pokedexApi = createApi({
         }
 
         return `pokemon?limit=${limit}&offset=${offset}`;
+      },
+      providesTags: (result, error, arg) => {
+        if (arg.search) {
+          return [{ type: "Pokemon", id: arg.search }];
+        }
+        if (arg.type) {
+          return [{ type: "PokemonList", id: `type-${arg.type}` }];
+        }
+        return [{ type: "PokemonList", id: `list-${arg.offset}-${arg.limit}` }];
       },
       transformResponse: (response, meta, arg) => {
         // If it's a search result and we get a single Pokemon object, wrap it in the expected format
@@ -52,6 +63,7 @@ export const pokedexApi = createApi({
     }),
     getPokemonDetails: builder.query({
       query: (name) => `pokemon/${name}`,
+      providesTags: (result, error, arg) => [{ type: "Pokemon", id: arg }],
       transformErrorResponse: (response, meta, arg) => {
         if (response.status === 404) {
           return {
@@ -64,6 +76,9 @@ export const pokedexApi = createApi({
     }),
     getPokemonSpecies: builder.query({
       query: (name) => `pokemon-species/${name}`,
+      providesTags: (result, error, arg) => [
+        { type: "PokemonSpecies", id: arg },
+      ],
       transformErrorResponse: (response, meta, arg) => {
         if (response.status === 404) {
           return {

@@ -7,7 +7,7 @@ import {
 import PokeballLoader from "./PokeballLoader";
 import PokemonDetails from "./PokemonDetails";
 import AddToTeamButton from "./AddToTeamButton";
-import "../styles/App.css";
+import "../styles/main.css";
 
 const getPokemonNumber = (num) => `#${String(num).padStart(4, "0")}`;
 

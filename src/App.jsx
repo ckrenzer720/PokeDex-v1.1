@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./styles/App.css";
+import "./styles/main.css";
 import PokeList from "./components/PokeList";
 import Profile from "./components/Profile";
 import LoginForm from "./components/LoginForm";

@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../styles/App.css";
+import "../styles/main.css";
 
 const LoginForm = ({ onLogin }) => {
   const [formData, setFormData] = useState({
     username: "",
     email: "",
-    password: ""
+    password: "",
   });
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -14,7 +14,7 @@ const LoginForm = ({ onLogin }) => {
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -40,8 +40,10 @@ const LoginForm = ({ onLogin }) => {
       name: formData.username,
       email: formData.email,
       username: formData.username,
-      picture: `https://ui-avatars.com/api/?name=${encodeURIComponent(formData.username)}&background=3b4cca&color=ffcb05&size=200`,
-      sub: `local|${Date.now()}`
+      picture: `https://ui-avatars.com/api/?name=${encodeURIComponent(
+        formData.username
+      )}&background=3b4cca&color=ffcb05&size=200`,
+      sub: `local|${Date.now()}`,
     };
 
     // Call the login handler
@@ -56,10 +58,10 @@ const LoginForm = ({ onLogin }) => {
           <h2>Trainer Login</h2>
           <p>Enter your details to access your PokéDex</p>
         </div>
-        
+
         <form onSubmit={handleSubmit} className="login-form">
           {error && <div className="error-message">{error}</div>}
-          
+
           <div className="form-group">
             <label htmlFor="username">Trainer Name:</label>
             <input

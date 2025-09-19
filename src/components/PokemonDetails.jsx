@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import "../styles/App.css";
+import "../styles/main.css";
 
 const STAT_LABELS = [
   "HP",

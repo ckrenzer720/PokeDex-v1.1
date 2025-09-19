@@ -163,14 +163,14 @@ const PokeList = ({ isAuthenticated }) => {
     if (error.status === 404 && filters.search) {
       return (
         <div className="pokemon-container">
-          <div className="header">
+          <div className="search-container">
             <PokemonSearchBar onSearch={handleSearch} />
           </div>
           <div className="main-content">
-            <p style={{ color: "red", textAlign: "center", marginTop: "20px" }}>
+            <div className="error-message">
               Pokemon "{filters.search}" not found. Please check the spelling
               and try again.
-            </p>
+            </div>
           </div>
         </div>
       );
@@ -178,13 +178,13 @@ const PokeList = ({ isAuthenticated }) => {
 
     return (
       <div className="pokemon-container">
-        <div className="header">
+        <div className="search-container">
           <PokemonSearchBar onSearch={handleSearch} />
         </div>
         <div className="main-content">
-          <p style={{ color: "red", textAlign: "center", marginTop: "20px" }}>
+          <div className="error-message">
             Failed to load Pokémon. Please try again later.
-          </p>
+          </div>
         </div>
       </div>
     );
@@ -194,14 +194,14 @@ const PokeList = ({ isAuthenticated }) => {
   if (filters.search && pokemonList.length === 0 && !isLoading) {
     return (
       <div className="pokemon-container">
-        <div className="header">
+        <div className="search-container">
           <PokemonSearchBar onSearch={handleSearch} />
         </div>
         <div className="main-content">
-          <p>
+          <div className="error-message">
             No Pokémon found with the name "{filters.search}". Please try a
             different search term.
-          </p>
+          </div>
         </div>
       </div>
     );
@@ -209,29 +209,34 @@ const PokeList = ({ isAuthenticated }) => {
 
   return (
     <div className="pokemon-container">
-      <div className="header">
+      <div className="search-container">
         <PokemonSearchBar onSearch={handleSearch} />
-        <div className="results-per-page">
-          <label htmlFor="results-per-page">Pokémon per page:</label>
-          <select
-            id="results-per-page"
-            value={limit}
-            onChange={(e) => {
-              setLimit(Number(e.target.value));
-              setPage(1); // Reset to the first page when the limit changes
-            }}
+        <div className="search-controls">
+          <div className="results-per-page">
+            <label htmlFor="results-per-page">Pokémon per page:</label>
+            <select
+              id="results-per-page"
+              value={limit}
+              onChange={(e) => {
+                setLimit(Number(e.target.value));
+                setPage(1); // Reset to the first page when the limit changes
+              }}
+            >
+              <option value={10}>10</option>
+              <option value={20}>20</option>
+              <option value={50}>50</option>
+              <option value={100}>100</option>
+            </select>
+          </div>
+          <button
+            onClick={() =>
+              setView((prev) => (prev === "grid" ? "list" : "grid"))
+            }
+            className="view-toggle"
           >
-            <option value={10}>10</option>
-            <option value={20}>20</option>
-            <option value={50}>50</option>
-            <option value={100}>100</option>
-          </select>
+            Switch to {view === "grid" ? "List" : "Grid"} View
+          </button>
         </div>
-        <button
-          onClick={() => setView((prev) => (prev === "grid" ? "list" : "grid"))}
-        >
-          Switch to {view === "grid" ? "List" : "Grid"} View
-        </button>
       </div>
       <div className="main-content">
         <div className={`pokemon-list ${view}`}>

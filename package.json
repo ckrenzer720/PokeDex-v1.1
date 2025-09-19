@@ -11,7 +11,7 @@
     "build:analyze": "vite build --mode analyze",
     "lint": "eslint .",
     "preview": "vite preview",
-    "analyze": "npm run build:analyze && npx vite-bundle-analyzer dist/stats.html"
+    "analyze": "npm run build:analyze && echo 'Bundle analysis complete! Open dist/stats.html in your browser to view the analysis.'"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.0.1",
@@ -36,6 +36,7 @@
     "eslint-plugin-react-refresh": "^0.4.5",
     "globals": "^13.24.0",
     "rollup-plugin-visualizer": "^5.9.2",
+    "terser": "^5.24.0",
     "vite": "^5.0.10",
     "vite-bundle-analyzer": "^0.7.0"
   }

@@ -62,14 +62,13 @@ const AddToTeamButton = React.memo(
       }
 
       return (
-        <>
-          <img
-            src="/pokeball.png"
-            alt="Add to team"
-            className="pokeball-icon"
-          />
-          {showText && <span>Add to Team</span>}
-        </>
+        <div className="pokeball-container">
+          <span className="pokeball-top" />
+          <span className="pokeball-bottom" />
+          <span className="pokeball-line" />
+          <span className="pokeball-center" />
+          <span className="pokeball-plus">+</span>
+        </div>
       );
     }, [isLoading, isAdded, showText]);
 

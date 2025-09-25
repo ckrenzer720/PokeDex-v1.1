@@ -67,7 +67,6 @@ const AddToTeamButton = React.memo(
           <span className="pokeball-bottom" />
           <span className="pokeball-line" />
           <span className="pokeball-center" />
-          <span className="pokeball-plus">+</span>
         </div>
       );
     }, [isLoading, isAdded, showText]);

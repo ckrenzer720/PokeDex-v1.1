@@ -834,8 +834,8 @@ h6 {
   position: absolute;
   bottom: var(--space-3);
   right: var(--space-3);
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
   padding: 0;
   margin: 0;
   font-size: var(--font-size-lg);
@@ -856,8 +856,8 @@ h6 {
 /* Pokeball Container */
 .pokeball-container {
   position: relative;
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -876,8 +876,8 @@ h6 {
 .pokeball-container .pokeball-bottom {
   position: absolute;
   left: 0;
-  width: 40px;
-  height: 20px;
+  width: 32px;
+  height: 16px;
   border: 2px solid var(--pokemon-black);
   background: var(--pokemon-red);
   z-index: 1;
@@ -887,14 +887,14 @@ h6 {
 .pokeball-container .pokeball-top {
   top: 0;
   border-bottom: none;
-  border-radius: 40px 40px 0 0;
+  border-radius: 32px 32px 0 0;
 }
 
 .pokeball-container .pokeball-bottom {
-  top: 20px;
+  top: 16px;
   border-top: none;
   border-bottom: 2px solid var(--pokemon-black);
-  border-radius: 0 0 40px 40px;
+  border-radius: 0 0 32px 32px;
   background: var(--pokemon-white);
 }
 
@@ -902,8 +902,8 @@ h6 {
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
   background: var(--pokemon-white);
   border: 2px solid var(--pokemon-black);
   border-radius: var(--border-radius-full);
@@ -912,27 +912,12 @@ h6 {
   transition: box-shadow 0.3s;
 }
 
-.pokeball-container .pokeball-plus {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  color: var(--pokemon-black);
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-bold);
-  z-index: 3;
-  pointer-events: none;
-  font-family: inherit;
-  opacity: 0;
-  transition: opacity 0.2s 0.1s;
-}
-
 .pokeball-container .pokeball-line {
   position: absolute;
   left: 1px;
-  right: -4px;
+  right: 1px;
   top: 50%;
-  height: 3px;
+  height: 2px;
   background: var(--pokemon-black);
   border-radius: 2px;
   z-index: 1;
@@ -940,15 +925,11 @@ h6 {
 }
 
 .add-to-team-btn:hover .pokeball-container .pokeball-top {
-  transform: translateY(-18px);
+  transform: translateY(-14px);
 }
 
 .add-to-team-btn:hover .pokeball-container .pokeball-bottom {
   transform: none;
-}
-
-.add-to-team-btn:hover .pokeball-container .pokeball-plus {
-  opacity: 1;
 }
 
 .add-to-team-btn:active .pokeball-container .pokeball-center {
@@ -978,6 +959,7 @@ h6 {
   font-size: var(--font-size-xs);
   border-radius: var(--border-radius-sm);
   white-space: nowrap;
+  min-width: max-content;
   max-width: 200px;
   text-align: center;
   overflow: visible;

@@ -37,7 +37,19 @@ const AddToTeamButton = React.memo(
           setTimeout(() => setIsAdded(false), 2000); // Reset after 2 seconds
         } catch (error) {
           console.error("Failed to add Pokémon to team:", error);
-          alert("Failed to add Pokémon to team. Please try again.");
+          
+          // Provide more helpful error messages
+          let errorMessage = "Failed to add Pokémon to team. Please try again.";
+          
+          if (error?.status === "FETCH_ERROR" || error?.error === "TypeError: Failed to fetch") {
+            errorMessage = "Unable to connect to the server. Please make sure the backend server is running on port 9009.\n\nRun: npm run server";
+          } else if (error?.data?.error) {
+            errorMessage = error.data.error;
+          } else if (error?.status === 400) {
+            errorMessage = error?.data?.error || "This Pokémon is already in your team!";
+          }
+          
+          alert(errorMessage);
         }
       },
       [pokemon, isAuthenticated, addPokemon]

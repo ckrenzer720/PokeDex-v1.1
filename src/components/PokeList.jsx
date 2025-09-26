@@ -9,6 +9,7 @@ import PokemonSearchBar from "./PokemonSearchBar";
 import PokeballLoader from "./PokeballLoader";
 import PokeballButton from "./PokeballButton";
 import AddToTeamButton from "./AddToTeamButton";
+import AddToFavoritesButton from "./AddToFavoritesButton";
 import LazyImage from "./LazyImage";
 import { useNavigate } from "react-router-dom";
 
@@ -104,7 +105,19 @@ const PokeList = ({ isAuthenticated }) => {
       alert(`${pokemon.name} has been added to your team!`);
     } catch (error) {
       console.error("Failed to add Pokémon to team:", error);
-      alert("Failed to add Pokémon to team. Please try again.");
+      
+      // Provide more helpful error messages
+      let errorMessage = "Failed to add Pokémon to team. Please try again.";
+      
+      if (error?.status === "FETCH_ERROR" || error?.error === "TypeError: Failed to fetch") {
+        errorMessage = "Unable to connect to the server. Please make sure the backend server is running on port 9009.\n\nRun: npm run server";
+      } else if (error?.data?.error) {
+        errorMessage = error.data.error;
+      } else if (error?.status === 400) {
+        errorMessage = error?.data?.error || "This Pokémon is already in your team!";
+      }
+      
+      alert(errorMessage);
     }
   };
 
@@ -256,24 +269,44 @@ const PokeList = ({ isAuthenticated }) => {
                 alt={pokemon.name}
                 className="pokemon-image"
               />
-              <AddToTeamButton
-                pokemon={{
-                  ...pokemon,
-                  id: pokemon.url
-                    ? pokemon.url.split("/").slice(-2, -1)[0]
-                    : pokemon.id,
-                  sprites: {
-                    front_default: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${
-                      pokemon.url
-                        ? pokemon.url.split("/").slice(-2, -1)[0]
-                        : pokemon.id
-                    }.png`,
-                  },
-                }}
-                isAuthenticated={isAuthenticated}
-                size="small"
-                showText={false}
-              />
+              <div className="pokemon-card-actions">
+                <AddToTeamButton
+                  pokemon={{
+                    ...pokemon,
+                    id: pokemon.url
+                      ? pokemon.url.split("/").slice(-2, -1)[0]
+                      : pokemon.id,
+                    sprites: {
+                      front_default: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${
+                        pokemon.url
+                          ? pokemon.url.split("/").slice(-2, -1)[0]
+                          : pokemon.id
+                      }.png`,
+                    },
+                  }}
+                  isAuthenticated={isAuthenticated}
+                  size="small"
+                  showText={false}
+                />
+                <AddToFavoritesButton
+                  pokemon={{
+                    ...pokemon,
+                    id: pokemon.url
+                      ? pokemon.url.split("/").slice(-2, -1)[0]
+                      : pokemon.id,
+                    sprites: {
+                      front_default: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${
+                        pokemon.url
+                          ? pokemon.url.split("/").slice(-2, -1)[0]
+                          : pokemon.id
+                      }.png`,
+                    },
+                  }}
+                  isAuthenticated={isAuthenticated}
+                  size="small"
+                  showText={false}
+                />
+              </div>
             </div>
           ))}
         </div>

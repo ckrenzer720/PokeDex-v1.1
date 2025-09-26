@@ -927,6 +927,29 @@ h6 {
   transform: scale(1.1);
 }
 
+.pokemon-card-actions {
+  position: absolute;
+  bottom: var(--space-2);
+  right: var(--space-2);
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+  z-index: 10;
+}
+
+.pokemon-card-actions .add-to-team-btn,
+.pokemon-card-actions .add-to-favorites-btn {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  min-width: 36px;
+  font-size: var(--font-size-sm);
+}
+
+.pokemon-card-actions .add-to-favorites-btn .star-icon {
+  font-size: var(--font-size-lg);
+}
+
 /* === PAGINATION === */
 .pagination {
   display: flex;
@@ -1640,6 +1663,139 @@ h6 {
   border-top: var(--border-width-2) solid var(--pokemon-gray-400);
 }
 
+.action-buttons-container {
+  display: flex;
+  gap: var(--space-4);
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* === ADD TO FAVORITES BUTTON === */
+.add-to-favorites-btn {
+  padding: var(--space-4) var(--space-6);
+  border: 2px solid #ffcb05;
+  border-radius: 16px;
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  background: linear-gradient(135deg, #fffbf0 0%, #fff9e6 100%);
+  color: #ffcb05;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: var(--font-family-primary);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  position: relative;
+  overflow: hidden;
+}
+
+.add-to-favorites-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 203, 5, 0.2),
+    transparent
+  );
+  transition: left 0.5s;
+}
+
+.add-to-favorites-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+  border-color: #ffb300;
+  background: linear-gradient(135deg, #ffcb05 0%, #ffb300 100%);
+  color: #1a3d6b;
+}
+
+.add-to-favorites-btn:hover:not(:disabled)::before {
+  left: 100%;
+}
+
+.add-to-favorites-btn:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
+}
+
+.add-to-favorites-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.add-to-favorites-btn.is-favorite {
+  background: linear-gradient(135deg, #ffcb05 0%, #ffb300 100%);
+  color: #1a3d6b;
+  border-color: #ffb300;
+}
+
+.add-to-favorites-btn.is-favorite .star-icon {
+  color: #1a3d6b;
+}
+
+.star-icon {
+  font-size: var(--font-size-xl);
+  line-height: 1;
+  transition: transform 0.2s ease;
+}
+
+.add-to-favorites-btn:hover:not(:disabled) .star-icon {
+  transform: scale(1.2) rotate(15deg);
+}
+
+.star-icon.filled {
+  color: #1a3d6b;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.favorite-spinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.favorite-spinner .star-icon {
+  animation: pulse 1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.7;
+  }
+}
+
+/* Size variants for favorites button */
+.add-to-favorites-btn.small {
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--font-size-sm);
+}
+
+.add-to-favorites-btn.small .star-icon {
+  font-size: var(--font-size-base);
+}
+
+.add-to-favorites-btn.large {
+  padding: var(--space-5) var(--space-8);
+  font-size: var(--font-size-lg);
+}
+
+.add-to-favorites-btn.large .star-icon {
+  font-size: var(--font-size-2xl);
+}
+
 .stats-section {
   background: var(--bg-primary);
   border-radius: var(--border-radius-md);
@@ -2305,7 +2461,468 @@ select:focus-visible {
 }
 
 /* ========================================
-   8. PRINT STYLES
+   8. TRAINER ID CARD (POKEMON GAME STYLE)
+   ======================================== */
+
+/* Profile Container */
+.profile-container {
+  min-height: 100vh;
+  padding: var(--space-6);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  background: linear-gradient(
+    135deg,
+    #4a90e2 0%,
+    #357abd 50%,
+    #2a5f8f 100%
+  );
+  position: relative;
+  overflow: hidden;
+}
+
+.profile-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(255, 255, 255, 0.03) 2px,
+      rgba(255, 255, 255, 0.03) 4px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 2px,
+      rgba(255, 255, 255, 0.03) 2px,
+      rgba(255, 255, 255, 0.03) 4px
+    );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ID Card - Pokemon Game Style */
+.id-card {
+  background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%);
+  border: 8px solid #2c5aa0;
+  border-radius: 16px;
+  box-shadow: 
+    0 0 0 4px #1a3d6b,
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    inset 0 2px 4px rgba(255, 255, 255, 0.5);
+  max-width: 600px;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  margin: var(--space-8) auto;
+}
+
+.id-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 12px;
+  background: linear-gradient(
+    90deg,
+    #ffcb05 0%,
+    #ffcb05 25%,
+    #ff6b35 25%,
+    #ff6b35 50%,
+    #ffcb05 50%,
+    #ffcb05 75%,
+    #ff6b35 75%,
+    #ff6b35 100%
+  );
+  z-index: 2;
+}
+
+/* ID Card Header */
+.id-card-header {
+  background: linear-gradient(135deg, #2c5aa0 0%, #1a3d6b 100%);
+  padding: var(--space-4) var(--space-6);
+  text-align: center;
+  border-bottom: 4px solid #1a3d6b;
+  position: relative;
+  margin-top: 12px;
+}
+
+.id-card-header::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    transparent 100%
+  );
+}
+
+.id-card-header h2 {
+  font-family: "PokemonFont", var(--font-family-primary);
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: #ffcb05;
+  text-shadow: 
+    3px 3px 0px #1a3d6b,
+    4px 4px 0px #1a3d6b,
+    -1px -1px 0px #1a3d6b,
+    1px -1px 0px #1a3d6b,
+    -1px 1px 0px #1a3d6b,
+    1px 1px 0px #1a3d6b;
+  letter-spacing: 2px;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+/* ID Card Content */
+.id-card-content {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: var(--space-6);
+  padding: var(--space-6);
+  background: #ffffff;
+  border-bottom: 4px solid #e0e0e0;
+}
+
+/* ID Card Photo Section */
+.id-card-photo {
+  position: relative;
+  background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+  border: 4px solid #2c5aa0;
+  border-radius: 8px;
+  padding: var(--space-3);
+  box-shadow: 
+    inset 0 2px 4px rgba(0, 0, 0, 0.2),
+    0 4px 8px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 180px;
+}
+
+.id-card-photo::before {
+  content: "";
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  right: 8px;
+  bottom: 8px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  pointer-events: none;
+}
+
+.profile-picture {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+  border: 2px solid #1a3d6b;
+  background: #ffffff;
+  object-fit: cover;
+  position: relative;
+  z-index: 1;
+}
+
+/* ID Card Info Section */
+.id-card-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-2) 0;
+}
+
+.info-row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-2) 0;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.info-row:last-child {
+  border-bottom: none;
+}
+
+.info-row .label {
+  font-family: "PokemonFont", var(--font-family-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  color: #2c5aa0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.1);
+}
+
+.info-row .value {
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  padding: var(--space-1) var(--space-2);
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+  border: 2px solid #d0d0d0;
+  border-radius: 4px;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* ID Card Footer */
+.id-card-footer {
+  background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+  padding: var(--space-6);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-6);
+  border-top: 4px solid #d0d0d0;
+}
+
+.team-section,
+.favorites-section {
+  background: #ffffff;
+  border: 3px solid #2c5aa0;
+  border-radius: 8px;
+  padding: var(--space-4);
+  box-shadow: 
+    inset 0 2px 4px rgba(0, 0, 0, 0.1),
+    0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.team-section h3,
+.favorites-section h3 {
+  font-family: "PokemonFont", var(--font-family-primary);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: #2c5aa0;
+  text-align: center;
+  margin: 0 0 var(--space-4) 0;
+  padding-bottom: var(--space-2);
+  border-bottom: 3px solid #2c5aa0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.1);
+}
+
+.team-placeholder,
+.favorites-placeholder {
+  min-height: 120px;
+}
+
+.team-placeholder p,
+.favorites-placeholder p {
+  text-align: center;
+  color: var(--text-muted);
+  font-style: italic;
+  padding: var(--space-4);
+  font-size: var(--font-size-sm);
+}
+
+/* Team and Favorites Grid */
+.team-grid,
+.favorites-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: var(--space-3);
+  padding: var(--space-2);
+}
+
+.team-pokemon,
+.favorite-pokemon {
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+  border: 2px solid #d0d0d0;
+  border-radius: 6px;
+  padding: var(--space-2);
+  text-align: center;
+  transition: all 0.2s ease;
+  position: relative;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.team-pokemon:hover,
+.favorite-pokemon:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  border-color: #2c5aa0;
+}
+
+.team-pokemon img,
+.favorite-pokemon img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  margin-bottom: var(--space-1);
+}
+
+.team-pokemon span,
+.favorite-pokemon span {
+  display: block;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  text-transform: capitalize;
+}
+
+.pokemon-actions {
+  display: flex;
+  gap: var(--space-1);
+  justify-content: center;
+  margin-top: var(--space-1);
+}
+
+.remove-pokemon-btn,
+.remove-favorite-btn,
+.favorite-btn {
+  width: 24px;
+  height: 24px;
+  border: 2px solid #dc2626;
+  border-radius: 50%;
+  background: #ffffff;
+  color: #dc2626;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  line-height: 1;
+  padding: 0;
+}
+
+.favorite-btn {
+  border-color: #ffcb05;
+  color: #ffcb05;
+  background: #fffbf0;
+}
+
+.remove-pokemon-btn:hover,
+.remove-favorite-btn:hover {
+  background: #dc2626;
+  color: #ffffff;
+  transform: scale(1.1);
+}
+
+.favorite-btn:hover {
+  background: #ffcb05;
+  color: #1a3d6b;
+  transform: scale(1.1);
+}
+
+.remove-pokemon-btn:disabled,
+.remove-favorite-btn:disabled,
+.favorite-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.team-pokemon.removing,
+.favorite-pokemon.removing {
+  opacity: 0.5;
+  transform: scale(0.95);
+}
+
+/* Success Message */
+.success-message {
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+  color: #ffffff;
+  padding: var(--space-3) var(--space-4);
+  border: 3px solid #15803d;
+  border-radius: 6px;
+  font-weight: var(--font-weight-semibold);
+  text-align: center;
+  margin: var(--space-4);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Error Message in Profile */
+.id-card .error-message {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: #ffffff;
+  border: 3px solid #991b1b;
+  border-radius: 6px;
+  margin: var(--space-4);
+}
+
+/* Responsive Design for ID Card */
+@media (max-width: 768px) {
+  .profile-container {
+    padding: var(--space-4);
+  }
+
+  .id-card {
+    max-width: 100%;
+    margin: var(--space-4) 0;
+    border-width: 6px;
+  }
+
+  .id-card-content {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+
+  .id-card-photo {
+    justify-self: center;
+    max-width: 180px;
+  }
+
+  .id-card-footer {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+
+  .team-grid,
+  .favorites-grid {
+    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .id-card-header h2 {
+    font-size: var(--font-size-xl);
+  }
+
+  .id-card-content {
+    padding: var(--space-4);
+  }
+
+  .id-card-photo {
+    max-width: 150px;
+    min-height: 150px;
+  }
+
+  .team-grid,
+  .favorites-grid {
+    grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+    gap: var(--space-2);
+  }
+}
+
+/* ========================================
+   9. PRINT STYLES
    ======================================== */
 
 @media print {

@@ -45,7 +45,19 @@ const Profile = ({ user, isAuthenticated }) => {
       setTimeout(() => setSuccessMessage(""), 3000);
     } catch (error) {
       console.error("Failed to add to favorites:", error);
-      alert("Failed to add to favorites. Please try again.");
+      
+      // Provide more helpful error messages
+      let errorMessage = "Failed to add to favorites. Please try again.";
+      
+      if (error?.status === "FETCH_ERROR" || error?.error === "TypeError: Failed to fetch") {
+        errorMessage = "Unable to connect to the server. Please make sure the backend server is running on port 9009.\n\nRun: npm run server";
+      } else if (error?.data?.error) {
+        errorMessage = error.data.error;
+      } else if (error?.status === 400) {
+        errorMessage = error?.data?.error || "This Pokémon is already in your favorites!";
+      }
+      
+      alert(errorMessage);
     }
   };
 

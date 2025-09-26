@@ -7,6 +7,7 @@ import {
 import PokeballLoader from "./PokeballLoader";
 import PokemonDetails from "./PokemonDetails";
 import AddToTeamButton from "./AddToTeamButton";
+import AddToFavoritesButton from "./AddToFavoritesButton";
 import "../styles/main.css";
 
 const getPokemonNumber = (num) => `#${String(num).padStart(4, "0")}`;
@@ -204,14 +205,22 @@ const PokemonPage = ({ isAuthenticated }) => {
           />
         </div>
 
-        {/* Add to Team Button */}
+        {/* Add to Team and Favorites Buttons */}
         <div className="card-team-section">
-          <AddToTeamButton
-            pokemon={pokemonDetails}
-            isAuthenticated={isAuthenticated}
-            size="large"
-            showText={true}
-          />
+          <div className="action-buttons-container">
+            <AddToTeamButton
+              pokemon={pokemonDetails}
+              isAuthenticated={isAuthenticated}
+              size="large"
+              showText={true}
+            />
+            <AddToFavoritesButton
+              pokemon={pokemonDetails}
+              isAuthenticated={isAuthenticated}
+              size="large"
+              showText={true}
+            />
+          </div>
         </div>
       </div>
     </div>

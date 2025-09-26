@@ -1,11 +1,42 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
+// Get base URL from environment variable or use default
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:9009/api/";
+
+// Custom base query with better error handling
+const baseQueryWithErrorHandling = async (args, api, extraOptions) => {
+  const result = await fetchBaseQuery({
+    baseUrl: API_BASE_URL,
+    prepareHeaders: (headers) => {
+      headers.set("Content-Type", "application/json");
+      return headers;
+    },
+  })(args, api, extraOptions);
+
+  // Handle fetch errors (network issues, server not running, etc.)
+  if (result.error) {
+    if (result.error.status === "FETCH_ERROR") {
+      // Server is likely not running or unreachable
+      console.error("Server connection error:", result.error);
+      return {
+        ...result,
+        error: {
+          ...result.error,
+          message:
+            "Unable to connect to server. Please make sure the server is running on port 9009.",
+        },
+      };
+    }
+  }
+
+  return result;
+};
+
 export const pokeCartApi = createApi({
   reducerPath: "pokeCartApi",
   tagTypes: ["MyCart", "Favorites"],
-  baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:9009/api/",
-  }),
+  baseQuery: baseQueryWithErrorHandling,
   endpoints: (builder) => ({
     getPokemonCollection: builder.query({
       query: () => "pokemons",

@@ -40,6 +40,7 @@ export default defineConfig(({ mode }) => ({
   },
   // Optimize dev server
   server: {
+    port: 5174,
     hmr: {
       overlay: false,
     },
